@@ -5,6 +5,7 @@ include_directories(
 )
 
 set(timetrak_SRCS
+    mainwindow.cpp
     main.cpp
 )
 
