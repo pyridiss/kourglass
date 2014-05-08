@@ -8,6 +8,8 @@
 
 class MainWindow : public KXmlGuiWindow
 {
+    Q_OBJECT
+
     public:
         MainWindow(QWidget *parent=0);
 
@@ -16,6 +18,8 @@ class MainWindow : public KXmlGuiWindow
         Storage* m_storage;
         void setupActions();
 
+    public slots:
+        void updateView();
 };
 
 #endif // MAINWINDOW_H

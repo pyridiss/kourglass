@@ -18,6 +18,9 @@ class Storage : public QObject
     private:
         QList<Task> m_tasks;
 
+    signals:
+        void tasksChanged();
+
     public slots:
         void addProject();
         void addTask();

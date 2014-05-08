@@ -32,8 +32,13 @@ void MainWindow::setupActions()
     connect(newProjectAction, SIGNAL(triggered(bool)), m_storage, SLOT(addProject()));
     connect(newTaskAction, SIGNAL(triggered(bool)), m_storage, SLOT(addTask()));
 
-    KStandardAction::quit(kapp, SLOT(quit()),
-                          actionCollection());
+    connect(m_storage, SIGNAL(tasksChanged()), this, SLOT(updateView()));
+
+    KStandardAction::quit(kapp, SLOT(quit()), actionCollection());
 
     setupGUI(Default, "timetrakui.rc");
+}
+
+void MainWindow::updateView()
+{
 }

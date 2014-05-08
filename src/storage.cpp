@@ -14,9 +14,11 @@ void Storage::addProject()
 {
     Task newProject;
     m_tasks.push_back(newProject);
+    emit tasksChanged();
 }
 
 void Storage::addTask()
 {
     addProject();
+    emit tasksChanged();
 }
