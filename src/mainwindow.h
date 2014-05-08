@@ -11,6 +11,7 @@ class MainWindow : public KXmlGuiWindow
 
     private:
         KTextEdit* textArea;
+        void setupActions();
 };
 
 #endif // MAINWINDOW_H
