@@ -15,14 +15,17 @@ Storage::~Storage()
     m_tasks.clear();
 }
 
-void Storage::addProject()
+QTreeWidgetItem* Storage::addProject()
 {
     Task* newProject = new Task();
     m_tasks.insert(newProject->m_uid, newProject);
-    emit tasksChanged();
+    return newProject->m_widgetItem;
 }
 
-void Storage::addTask()
+QTreeWidgetItem* Storage::addTask(QString& parent)
 {
-    addProject();
+    Task* newTask = new Task();
+    m_tasks.insert(newTask->m_uid, newTask);
+    newTask->m_relatedTo = parent;
+    return newTask->m_widgetItem;
 }

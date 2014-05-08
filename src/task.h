@@ -11,7 +11,6 @@ class Task
         QString m_uid;
         QString m_relatedTo;
         QTreeWidgetItem* m_widgetItem;
-        bool m_shown = false;
 
     public:
         Task();

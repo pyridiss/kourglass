@@ -29,10 +29,8 @@ void MainWindow::setupActions()
     actionCollection()->addAction("new-project", newProjectAction);
     actionCollection()->addAction("new-task", newTaskAction);
 
-    connect(newProjectAction, SIGNAL(triggered(bool)), m_storage, SLOT(addProject()));
-    connect(newTaskAction, SIGNAL(triggered(bool)), m_storage, SLOT(addTask()));
-
-    connect(m_storage, SIGNAL(tasksChanged()), this, SLOT(updateView()));
+    connect(newProjectAction, SIGNAL(triggered(bool)), this, SLOT(addProject()));
+    connect(newTaskAction, SIGNAL(triggered(bool)), this, SLOT(addTask()));
 
     connect(m_mainTree, SIGNAL(itemClicked(QTreeWidgetItem*, int)), this, SLOT(setCurrentTask(QTreeWidgetItem*)));
 
@@ -41,15 +39,18 @@ void MainWindow::setupActions()
     setupGUI(Default, "timetrakui.rc");
 }
 
-void MainWindow::updateView()
+void MainWindow::addProject()
 {
-    for (auto& i : m_storage->m_tasks)
+    QTreeWidgetItem* project = m_storage->addProject();
+    m_mainTree->addTopLevelItem(project);
+}
+
+void MainWindow::addTask()
+{
+    if (m_storage->m_tasks.find(m_currentTask) != m_storage->m_tasks.end())
     {
-        if (!i->m_shown)
-        {
-            m_mainTree->addTopLevelItem(i->m_widgetItem);
-            i->m_shown = true;
-        }
+        QTreeWidgetItem* task = m_storage->addTask(m_currentTask);
+        m_storage->m_tasks[m_currentTask]->m_widgetItem->addChild(task);
     }
 }
 

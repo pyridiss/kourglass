@@ -21,7 +21,8 @@ class MainWindow : public KXmlGuiWindow
         void setupActions();
 
     public slots:
-        void updateView();
+        void addProject();
+        void addTask();
         void setCurrentTask(QTreeWidgetItem* cur);
 };
 
