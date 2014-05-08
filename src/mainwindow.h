@@ -2,7 +2,9 @@
 #define MAINWINDOW_H
 
 #include <KXmlGuiWindow>
-#include <KTextEdit>
+#include <QTreeWidget>
+
+#include "storage.h"
 
 class MainWindow : public KXmlGuiWindow
 {
@@ -10,8 +12,10 @@ class MainWindow : public KXmlGuiWindow
         MainWindow(QWidget *parent=0);
 
     private:
-        KTextEdit* textArea;
+        QTreeWidget* m_mainTree;
+        Storage* m_storage;
         void setupActions();
+
 };
 
 #endif // MAINWINDOW_H

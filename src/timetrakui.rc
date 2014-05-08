@@ -8,17 +8,18 @@
 
     <MenuBar>
         <Menu name="file" >
-            <Action name="clear" />
+            <Action name="new-project" />
         </Menu>
         <Menu >
-            <text>A&amp;nother Menu</text>
-            <Action name="clear" />
+            <text>Actions</text>
+            <Action name="new-task" />
         </Menu >
     </MenuBar>
 
     <ToolBar name="mainToolBar" >
         <text>Main Toolbar</text>
-        <Action name="clear" />
+        <Action name="new-project" />
+        <Action name="new-task" />
     </ToolBar>
 
 </gui>
