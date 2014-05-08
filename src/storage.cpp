@@ -18,12 +18,11 @@ Storage::~Storage()
 void Storage::addProject()
 {
     Task* newProject = new Task();
-    m_tasks.push_back(newProject);
+    m_tasks.insert(newProject->m_uid, newProject);
     emit tasksChanged();
 }
 
 void Storage::addTask()
 {
     addProject();
-    emit tasksChanged();
 }

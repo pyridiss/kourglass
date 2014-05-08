@@ -34,6 +34,8 @@ void MainWindow::setupActions()
 
     connect(m_storage, SIGNAL(tasksChanged()), this, SLOT(updateView()));
 
+    connect(m_mainTree, SIGNAL(itemClicked(QTreeWidgetItem*, int)), this, SLOT(setCurrentTask(QTreeWidgetItem*)));
+
     KStandardAction::quit(kapp, SLOT(quit()), actionCollection());
 
     setupGUI(Default, "timetrakui.rc");
@@ -48,5 +50,14 @@ void MainWindow::updateView()
             m_mainTree->addTopLevelItem(i->m_widgetItem);
             i->m_shown = true;
         }
+    }
+}
+
+void MainWindow::setCurrentTask(QTreeWidgetItem* cur)
+{
+    for (auto& i : m_storage->m_tasks)
+    {
+        if (i->m_widgetItem == cur)
+            m_currentTask = i->m_uid;
     }
 }

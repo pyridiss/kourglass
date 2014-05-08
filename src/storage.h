@@ -3,7 +3,8 @@
 
 #include <KXmlGuiWindow>
 #include <QTreeWidget>
-#include <QList>
+#include <QString>
+#include <QMap>
 
 #include "task.h"
 
@@ -16,7 +17,7 @@ class Storage : public QObject
         ~Storage();
 
     public:
-        QList<Task*> m_tasks;
+        QMap<QString, Task*> m_tasks;
 
     signals:
         void tasksChanged();
