@@ -51,6 +51,7 @@ void MainWindow::addTask()
     {
         QTreeWidgetItem* task = m_storage->addTask(m_currentTask);
         m_storage->m_tasks[m_currentTask]->m_widgetItem->addChild(task);
+        m_mainTree->expandItem(m_storage->m_tasks[m_currentTask]->m_widgetItem);
     }
 }
 
