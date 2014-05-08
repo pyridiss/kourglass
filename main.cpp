@@ -1,11 +1,9 @@
-#include <cstdlib>
- 
 #include <KApplication>
 #include <KAboutData>
 #include <KCmdLineArgs>
 #include <KMessageBox>
 #include <KLocale>
- 
+
 int main (int argc, char *argv[])
 {
     KAboutData aboutData( "timetrak",
