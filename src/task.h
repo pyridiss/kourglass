@@ -2,10 +2,14 @@
 #define TASK_H
 
 #include <QString>
+#include <QTreeWidgetItem>
 
 class Task
 {
-    QString m_name;
+    public:
+        QString m_name;
+        QTreeWidgetItem* m_widgetItem;
+        bool m_shown = false;
 
     public:
         Task();

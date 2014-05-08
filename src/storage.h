@@ -15,8 +15,8 @@ class Storage : public QObject
         explicit Storage();
         ~Storage();
 
-    private:
-        QList<Task> m_tasks;
+    public:
+        QList<Task*> m_tasks;
 
     signals:
         void tasksChanged();

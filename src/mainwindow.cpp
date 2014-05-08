@@ -41,4 +41,12 @@ void MainWindow::setupActions()
 
 void MainWindow::updateView()
 {
+    for (auto& i : m_storage->m_tasks)
+    {
+        if (!i->m_shown)
+        {
+            m_mainTree->addTopLevelItem(i->m_widgetItem);
+            i->m_shown = true;
+        }
+    }
 }
