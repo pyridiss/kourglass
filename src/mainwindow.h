@@ -6,6 +6,8 @@
 #include <QTreeWidget>
 
 #include "storage.h"
+#include "newprojectdialog.h"
+#include "newtaskdialog.h"
 
 class MainWindow : public KXmlGuiWindow
 {
@@ -15,14 +17,16 @@ class MainWindow : public KXmlGuiWindow
         MainWindow(QWidget *parent=0);
 
     private:
+        NewProjectDialog* m_addProjectDialog;
+        NewTaskDialog* m_addTaskDialog;
         QTreeWidget* m_mainTree;
         QString m_currentTask;
         Storage* m_storage;
         void setupActions();
 
     public slots:
-        void addProject();
-        void addTask();
+        void addProject(QString& name);
+        void addTask(QString& name);
         void setCurrentTask(QTreeWidgetItem* cur);
 };
 

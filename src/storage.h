@@ -23,8 +23,8 @@ class Storage : public QObject
         void tasksChanged();
 
     public slots:
-        QTreeWidgetItem* addProject();
-        QTreeWidgetItem* addTask(QString& parent);
+        QTreeWidgetItem* addProject(QString& name);
+        QTreeWidgetItem* addTask(QString& parent, QString& name);
 };
 
 #endif // STORAGE_H

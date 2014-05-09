@@ -5,11 +5,17 @@ include_directories(
 )
 
 set(timetrak_SRCS
+    newprojectdialog.cpp
+    newtaskdialog.cpp
     task.cpp
     storage.cpp
     mainwindow.cpp
     main.cpp
 )
+
+kde4_add_ui_files(timetrak_SRCS
+                  newprojectdialog.ui
+                  newtaskdialog.ui)
 
 kde4_add_executable(timetrak ${timetrak_SRCS})
 
