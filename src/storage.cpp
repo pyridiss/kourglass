@@ -25,7 +25,7 @@ QTreeWidgetItem* Storage::addProject(QString& name)
     return newProject->m_widgetItem;
 }
 
-QTreeWidgetItem* Storage::addTask(QString& project, QString& parent, QString& name)
+QTreeWidgetItem* Storage::addTask(QString& project, Task* parent, QString& name)
 {
     Task* newTask = new Task();
     m_tasks.insert(newTask->m_uid, newTask);
@@ -35,4 +35,17 @@ QTreeWidgetItem* Storage::addTask(QString& project, QString& parent, QString& na
     newTask->m_project = project;
     newTask->m_parent = parent;
     return newTask->m_widgetItem;
+}
+
+void Storage::updateDuration()
+{
+    for (auto& i : m_tasks)
+    {
+        if (i->running)
+            i->addRunningTime();
+    }
+    for (auto& i : m_tasks)
+    {
+        i->m_widgetItem->setText(1, i->currentDuration.toString());
+    }
 }

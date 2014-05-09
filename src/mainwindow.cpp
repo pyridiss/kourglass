@@ -5,6 +5,7 @@
 #include <KLocale>
 #include <KActionCollection>
 #include <KStandardAction>
+#include <QTimer>
 
 MainWindow::MainWindow(QWidget *parent) : KXmlGuiWindow(parent)
 {
@@ -17,6 +18,10 @@ MainWindow::MainWindow(QWidget *parent) : KXmlGuiWindow(parent)
 
     m_addTaskDialog = new NewTaskDialog();
     connect(m_addTaskDialog, SIGNAL(taskAccepted(QString&)), this, SLOT(addTask(QString&)));
+
+    QTimer* durationUpdater = new QTimer(this);
+    connect(durationUpdater, SIGNAL(timeout()), m_storage, SLOT(updateDuration()));
+    durationUpdater->start(1000);
 
     setupActions();
 }
@@ -85,7 +90,7 @@ void MainWindow::addTask(QString& name)
 {
     if (m_storage->m_tasks.find(m_currentTask) != m_storage->m_tasks.end())
     {
-        QTreeWidgetItem* task = m_storage->addTask(m_currentProject, m_currentTask, name);
+        QTreeWidgetItem* task = m_storage->addTask(m_currentProject, m_storage->m_tasks[m_currentTask], name);
         m_storage->m_tasks[m_currentTask]->m_widgetItem->addChild(task);
         m_storage->m_tasks[m_currentTask]->m_widgetItem->setExpanded(true);
     }

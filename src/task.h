@@ -11,7 +11,7 @@ class Task
     public:
         QString m_name;
         QString m_uid;
-        QString m_parent;
+        Task* m_parent;
         QString m_project;
         QTreeWidgetItem* m_widgetItem;
         QTime currentDuration;
@@ -25,9 +25,11 @@ class Task
         Task();
         void start();
         void stop();
+        void addRunningTime(int msecs = 0);
 
     private:
         void setUid();
+
 };
 
 #endif //TASK_H
