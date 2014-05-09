@@ -18,6 +18,7 @@ void NewTaskDialog::accept()
 {
     QString nameOfTask = ui->lineEdit->text();
     ui->lineEdit->clear();
+    ui->lineEdit->setFocus();
     hide();
     emit taskAccepted(nameOfTask);
 }

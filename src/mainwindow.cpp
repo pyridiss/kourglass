@@ -1,6 +1,5 @@
 #include "mainwindow.h"
 
-#include <QStringList>
 #include <KApplication>
 #include <KAction>
 #include <KLocale>
@@ -9,15 +8,9 @@
 
 MainWindow::MainWindow(QWidget *parent) : KXmlGuiWindow(parent)
 {
-    m_mainTree = new QTreeWidget();
+    m_mainView = new MainView();
     m_storage = new Storage();
-    setCentralWidget(m_mainTree);
-
-    m_mainTree->setColumnCount(2);
-    QStringList headers;
-    headers.push_back(i18n("Name"));
-    headers.push_back(i18n("Duration"));
-    m_mainTree->setHeaderLabels(headers);
+    setCentralWidget(m_mainView);
 
     m_addProjectDialog = new NewProjectDialog();
     connect(m_addProjectDialog, SIGNAL(projectAccepted(QString&)), this, SLOT(addProject(QString&)));
@@ -46,26 +39,41 @@ void MainWindow::setupActions()
     connect(newProjectAction, SIGNAL(triggered(bool)), m_addProjectDialog, SLOT(show()));
     connect(newTaskAction, SIGNAL(triggered(bool)), m_addTaskDialog, SLOT(show()));
 
-    connect(m_mainTree, SIGNAL(itemClicked(QTreeWidgetItem*, int)), this, SLOT(setCurrentTask(QTreeWidgetItem*)));
+    connect(m_mainView, SIGNAL(projectChanged(const QString&)), this, SLOT(changeCurrentProject(const QString&)));
+    connect(m_mainView, SIGNAL(taskChanged(QTreeWidgetItem*)), this, SLOT(setCurrentTask(QTreeWidgetItem*)));
 
     KStandardAction::quit(kapp, SLOT(quit()), actionCollection());
 
     setupGUI(Default, "timetrakui.rc");
 }
 
+void MainWindow::changeCurrentProject(const QString& cur)
+{
+    QString old = m_currentProject;
+    for (auto& i : m_storage->m_tasks)
+    {
+        if (i->m_name == cur)
+            m_currentProject = i->m_uid;
+    }
+    if (m_storage->m_tasks.find(m_currentProject) != m_storage->m_tasks.end())
+        if (m_storage->m_tasks.find(old) != m_storage->m_tasks.end())
+            m_mainView->changeTreeView(m_storage->m_tasks[old], m_storage->m_tasks[m_currentProject]);
+}
+
 void MainWindow::addProject(QString& name)
 {
     QTreeWidgetItem* project = m_storage->addProject(name);
-    m_mainTree->addTopLevelItem(project);
+    m_mainView->addProject(name, project);
+    changeCurrentProject(name);
 }
 
 void MainWindow::addTask(QString& name)
 {
     if (m_storage->m_tasks.find(m_currentTask) != m_storage->m_tasks.end())
     {
-        QTreeWidgetItem* task = m_storage->addTask(m_currentTask, name);
+        QTreeWidgetItem* task = m_storage->addTask(m_currentProject, m_currentTask, name);
         m_storage->m_tasks[m_currentTask]->m_widgetItem->addChild(task);
-        m_mainTree->expandItem(m_storage->m_tasks[m_currentTask]->m_widgetItem);
+        m_storage->m_tasks[m_currentTask]->m_widgetItem->setExpanded(true);
     }
 }
 

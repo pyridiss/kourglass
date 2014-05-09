@@ -24,7 +24,7 @@ class Storage : public QObject
 
     public slots:
         QTreeWidgetItem* addProject(QString& name);
-        QTreeWidgetItem* addTask(QString& parent, QString& name);
+        QTreeWidgetItem* addTask(QString& project, QString& parent, QString& name);
 };
 
 #endif // STORAGE_H

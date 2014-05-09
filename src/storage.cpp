@@ -21,15 +21,18 @@ QTreeWidgetItem* Storage::addProject(QString& name)
     m_tasks.insert(newProject->m_uid, newProject);
     newProject->m_widgetItem->setText(0, name);
     newProject->m_widgetItem->setText(1, "00:00");
+    newProject->m_name = name;
     return newProject->m_widgetItem;
 }
 
-QTreeWidgetItem* Storage::addTask(QString& parent, QString& name)
+QTreeWidgetItem* Storage::addTask(QString& project, QString& parent, QString& name)
 {
     Task* newTask = new Task();
     m_tasks.insert(newTask->m_uid, newTask);
     newTask->m_widgetItem->setText(0, name);
     newTask->m_widgetItem->setText(1, "00:00");
-    newTask->m_relatedTo = parent;
+    newTask->m_name = name;
+    newTask->m_project = project;
+    newTask->m_parent = parent;
     return newTask->m_widgetItem;
 }

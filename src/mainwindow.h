@@ -3,9 +3,9 @@
 
 #include <KXmlGuiWindow>
 #include <QString>
-#include <QTreeWidget>
 
 #include "storage.h"
+#include "mainview.h"
 #include "newprojectdialog.h"
 #include "newtaskdialog.h"
 
@@ -19,12 +19,14 @@ class MainWindow : public KXmlGuiWindow
     private:
         NewProjectDialog* m_addProjectDialog;
         NewTaskDialog* m_addTaskDialog;
-        QTreeWidget* m_mainTree;
+        MainView* m_mainView;
+        QString m_currentProject;
         QString m_currentTask;
         Storage* m_storage;
         void setupActions();
 
     public slots:
+        void changeCurrentProject(const QString& cur);
         void addProject(QString& name);
         void addTask(QString& name);
         void setCurrentTask(QTreeWidgetItem* cur);
