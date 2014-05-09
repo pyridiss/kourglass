@@ -105,6 +105,7 @@ void MainWindow::startCurrentTask()
     if (m_storage->m_tasks.find(m_currentTask) != m_storage->m_tasks.end())
     {
         m_storage->m_tasks[m_currentTask]->m_widgetItem->setIcon(0, KIcon("arrow-right"));
+        m_storage->m_tasks[m_currentTask]->start();
     }
 }
 
@@ -113,5 +114,6 @@ void MainWindow::stopCurrentTask()
     if (m_storage->m_tasks.find(m_currentTask) != m_storage->m_tasks.end())
     {
         m_storage->m_tasks[m_currentTask]->m_widgetItem->setIcon(0, KIcon("media-playback-pause"));
+        m_storage->m_tasks[m_currentTask]->stop();
     }
 }

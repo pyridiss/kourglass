@@ -3,6 +3,8 @@
 
 #include <QString>
 #include <QTreeWidgetItem>
+#include <QDateTime>
+#include <QTime>
 
 class Task
 {
@@ -12,9 +14,17 @@ class Task
         QString m_parent;
         QString m_project;
         QTreeWidgetItem* m_widgetItem;
+        QTime currentDuration;
+        bool running;
+
+    private:
+        QDateTime startTime;
+        QTime runningTime;
 
     public:
         Task();
+        void start();
+        void stop();
 
     private:
         void setUid();
