@@ -30,6 +30,8 @@ class MainWindow : public KXmlGuiWindow
         void addProject(QString& name);
         void addTask(QString& name);
         void setCurrentTask(QTreeWidgetItem* cur);
+        void startCurrentTask();
+        void stopCurrentTask();
 };
 
 #endif // MAINWINDOW_H

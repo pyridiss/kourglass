@@ -20,6 +20,8 @@
         <text>Main Toolbar</text>
         <Action name="new-project" />
         <Action name="new-task" />
+        <Action name="start-task" />
+        <Action name="stop-task" />
     </ToolBar>
 
 </gui>
