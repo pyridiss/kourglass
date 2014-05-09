@@ -9,7 +9,7 @@
 
 MainWindow::MainWindow(QWidget *parent) : KXmlGuiWindow(parent)
 {
-    m_mainView = new MainView();
+    m_mainView = new MainView(this);
     m_storage = new Storage();
     setCentralWidget(m_mainView);
 
