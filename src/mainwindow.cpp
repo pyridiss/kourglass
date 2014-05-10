@@ -118,6 +118,7 @@ void MainWindow::stopCurrentTask()
 {
     if (m_storage->m_tasks.find(m_currentTask) != m_storage->m_tasks.end())
     {
+        if (!m_storage->m_tasks[m_currentTask]->running) return;
         m_storage->m_tasks[m_currentTask]->m_widgetItem->setIcon(0, KIcon("media-playback-pause"));
         m_storage->m_tasks[m_currentTask]->stop();
     }
