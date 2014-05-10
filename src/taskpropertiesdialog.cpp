@@ -46,6 +46,9 @@ TaskPropertiesDialog::TaskPropertiesDialog(QWidget *parent) :
     ui->setupUi(this);
     ui->addEventButton->setIcon(KIcon("list-add"));
     ui->deleteEventButton->setIcon(KIcon("list-remove"));
+    connect(ui->addEventButton, SIGNAL(released()), this, SLOT(addEvent()));
+    connect(ui->deleteEventButton, SIGNAL(released()), this, SLOT(deleteEvent()));
+
     m_currentTask = nullptr;
 
     TaskPropertiesDateTimeEditDelegate *widgetDelegate = new TaskPropertiesDateTimeEditDelegate(ui->tableEvents);
@@ -70,6 +73,10 @@ void TaskPropertiesDialog::setTask(Task* task)
 void TaskPropertiesDialog::updateTableEvents()
 {
     int row = 0;
+    ui->tableEvents->clearContents();
+    while (ui->tableEvents->rowCount() > 0)
+        ui->tableEvents->removeRow(0);
+
     for (auto& i : m_currentTask->m_events)
     {
         ui->tableEvents->insertRow(row);
@@ -87,9 +94,22 @@ void TaskPropertiesDialog::updateTableEvents()
         ui->tableEvents->setItem(row, 2, end);
         ++row;
     }
+    ui->tableEvents->resizeColumnsToContents();
 }
 
 void TaskPropertiesDialog::updateTask()
+{
+    
+}
+
+void TaskPropertiesDialog::addEvent()
+{
+    m_currentTask->start();
+    m_currentTask->stop();
+    updateTableEvents();
+}
+
+void TaskPropertiesDialog::deleteEvent()
 {
     
 }

@@ -25,6 +25,10 @@ private:
 private:
     void updateTableEvents();
     void updateTask();
+
+public slots:
+    void addEvent();
+    void deleteEvent();
 };
 
 #endif // TASKPROPERTIESDIALOG_H
