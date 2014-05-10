@@ -9,6 +9,7 @@ Task::Task()
     setUid();
     m_currentDuration.setHMS(0, 0, 0);
     m_parent = nullptr;
+    m_lastEvent = nullptr;
 }
 
 Task::~Task()
@@ -33,6 +34,7 @@ void Task::start()
     m_runningTime.start();
     m_running = true;
     Event* newEvent = new Event();
+    m_lastEvent = newEvent;
     m_events.insert(newEvent->getUid(), newEvent);
     m_currentEvent = newEvent->getUid();
 }

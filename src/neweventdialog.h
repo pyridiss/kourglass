@@ -17,6 +17,14 @@ public:
     
 private:
     Ui::NewEventDialog *ui;
+
+signals:
+    void eventAccepted(QString&);
+    void eventCancelled();
+
+public slots:
+    void accept();
+    void reject();
 };
 
 #endif // NEWEVENTDIALOG_H

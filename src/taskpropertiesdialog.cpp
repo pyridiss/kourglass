@@ -16,6 +16,7 @@ class TaskPropertiesDateTimeEditDelegate : public QItemDelegate
         QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem&, const QModelIndex&) const
         {
             QDateTimeEdit *editor = new QDateTimeEdit(parent);
+            editor->setDisplayFormat(QString("dd/MM/yyyy  HH:mm:ss"));
             return editor;
         }
 

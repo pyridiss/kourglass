@@ -19,6 +19,7 @@ class Task
         QTime m_currentDuration;
         bool m_running;
         QMap<QString, Event*> m_events;
+        Event* m_lastEvent;
 
     private:
         QString m_currentEvent;

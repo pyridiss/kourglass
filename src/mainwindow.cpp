@@ -20,6 +20,9 @@ MainWindow::MainWindow(QWidget *parent) : KXmlGuiWindow(parent)
     m_addTaskDialog = new NewTaskDialog();
     connect(m_addTaskDialog, SIGNAL(taskAccepted(QString&)), this, SLOT(addTask(QString&)));
 
+    m_addEventDialog = new NewEventDialog();
+    connect(m_addEventDialog, SIGNAL(eventAccepted(QString&)), this, SLOT(renameLastEvent(QString&)));
+
     QTimer* durationUpdater = new QTimer(this);
     connect(durationUpdater, SIGNAL(timeout()), m_storage, SLOT(updateDuration()));
     durationUpdater->start(1000);
@@ -76,6 +79,7 @@ void MainWindow::setupActions()
     connect(newTaskAction, SIGNAL(triggered(bool)), m_addTaskDialog, SLOT(show()));
     connect(startTaskAction, SIGNAL(triggered(bool)), this, SLOT(startCurrentTask()));
     connect(stopTaskAction, SIGNAL(triggered(bool)), this, SLOT(stopCurrentTask()));
+    connect(stopTaskAction, SIGNAL(triggered(bool)), m_addEventDialog, SLOT(show()));
     connect(removeTaskAction, SIGNAL(triggered(bool)), this, SLOT(removeCurrentTask()));
     connect(deleteTaskEventsAction, SIGNAL(triggered(bool)), this, SLOT(removeCurrentTask()));
     connect(taskPropertiesAction, SIGNAL(triggered(bool)), this, SLOT(showTaskProperties()));
@@ -140,6 +144,11 @@ void MainWindow::stopCurrentTask()
 void MainWindow::removeCurrentTask()
 {
     m_storage->removeTask(m_currentTask);
+}
+
+void MainWindow::renameLastEvent(QString& name)
+{
+    m_storage->m_tasks[m_currentTask]->m_lastEvent->m_name = name;
 }
 
 void MainWindow::showTaskProperties()
