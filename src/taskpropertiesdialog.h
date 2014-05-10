@@ -25,6 +25,9 @@ private:
 private:
     void updateTableEvents();
 
+signals:
+    void allDurationsChanged();
+
 public slots:
     void updateTask();
     void addEvent();

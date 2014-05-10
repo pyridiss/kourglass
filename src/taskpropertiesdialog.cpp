@@ -124,6 +124,7 @@ void TaskPropertiesDialog::updateTask()
             event->m_endTime = QDateTime::fromString(item->text());
         }
     }
+    emit allDurationsChanged();
 }
 
 void TaskPropertiesDialog::addEvent()

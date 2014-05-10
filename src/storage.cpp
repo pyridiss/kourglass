@@ -68,6 +68,7 @@ QTreeWidgetItem* Storage::addTask(QString& project, Task* parent, QString& name)
     newTask->m_name = name;
     newTask->m_project = project;
     newTask->m_parent = parent;
+    parent->addChild(newTask);
     return newTask->m_widgetItem;
 }
 
@@ -81,5 +82,14 @@ void Storage::updateDuration()
     for (auto& i : m_tasks)
     {
         i->m_widgetItem->setText(1, i->m_currentDuration.toString());
+    }
+}
+
+void Storage::computeAllDurations()
+{
+    for (auto& i : m_tasks)
+    {
+        if (i->m_parent == nullptr)
+            i->computeDuration();
     }
 }

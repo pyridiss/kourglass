@@ -10,6 +10,7 @@ Task::Task()
     m_currentDuration.setHMS(0, 0, 0);
     m_parent = nullptr;
     m_lastEvent = nullptr;
+    m_running = false;
 }
 
 Task::~Task()
@@ -48,7 +49,7 @@ void Task::stop()
         m_events[m_currentEvent]->end();
 }
 
-void Task::addRunningTime(int msecs)
+void Task::addRunningTime(int msecs, bool addToParent)
 {
     if (msecs == 0)
     {
@@ -56,6 +57,29 @@ void Task::addRunningTime(int msecs)
         m_runningTime.restart();
     }
     m_currentDuration = m_currentDuration.addMSecs(msecs);
-    if (m_parent != nullptr)
+    if (m_parent != nullptr && addToParent)
         m_parent->addRunningTime(msecs);
+}
+
+void Task::addChild(Task* child)
+{
+    m_children.push_back(child);
+}
+
+void Task::computeDuration()
+{
+    m_currentDuration.setHMS(0, 0, 0, 0);
+    for (auto& child : m_children)
+    {
+        child->computeDuration();
+    }
+    for (auto& event : m_events)
+    {
+        m_currentDuration = m_currentDuration.addSecs(event->m_startTime.secsTo(event->m_endTime));
+    }
+    if (m_parent != nullptr)
+    {
+        qint64 msecs = ((m_currentDuration.hour() * 60 + m_currentDuration.minute()) * 60 + m_currentDuration.second()) * 1000;
+        m_parent->addRunningTime(msecs, false);
+    }
 }

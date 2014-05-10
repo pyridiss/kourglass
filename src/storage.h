@@ -31,6 +31,7 @@ class Storage : public QObject
         QTreeWidgetItem* addProject(QString& name);
         QTreeWidgetItem* addTask(QString& project, Task* parent, QString& name);
         void updateDuration();
+        void computeAllDurations();
 };
 
 #endif // STORAGE_H

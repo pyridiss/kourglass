@@ -4,6 +4,7 @@
 #include <QString>
 #include <QTreeWidgetItem>
 #include <QTime>
+#include <QList>
 #include <QMap>
 
 #include "event.h"
@@ -14,6 +15,7 @@ class Task
         QString m_name;
         QString m_uid;
         Task* m_parent;
+        QList<Task*> m_children;
         QString m_project;
         QTreeWidgetItem* m_widgetItem;
         QTime m_currentDuration;
@@ -30,7 +32,9 @@ class Task
         ~Task();
         void start();
         void stop();
-        void addRunningTime(int msecs = 0);
+        void addRunningTime(int msecs = 0, bool addToParent = true);
+        void addChild(Task* child);
+        void computeDuration();
 
     private:
         void setUid();
