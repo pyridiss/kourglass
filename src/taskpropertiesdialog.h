@@ -21,6 +21,10 @@ public:
 private:
     Ui::TaskPropertiesDialog *ui;
     Task* m_currentTask;
+    
+private:
+    void updateTableEvents();
+    void updateTask();
 };
 
 #endif // TASKPROPERTIESDIALOG_H

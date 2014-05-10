@@ -15,11 +15,11 @@ class Event
 
     public:
         QString m_name;
+        QDateTime m_startTime;
+        QDateTime m_endTime;
 
     private:
         QString m_uid;
-        QDateTime m_startTime;
-        QDateTime m_endTime;
 
     private:
         void setUid();

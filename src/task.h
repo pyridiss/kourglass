@@ -18,9 +18,9 @@ class Task
         QTreeWidgetItem* m_widgetItem;
         QTime m_currentDuration;
         bool m_running;
+        QMap<QString, Event*> m_events;
 
     private:
-        QMap<QString, Event*> m_events;
         QString m_currentEvent;
         QTime m_runningTime;
 
