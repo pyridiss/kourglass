@@ -1,22 +1,26 @@
-#ifndef EVENTSLISTDIALOG_H
-#define EVENTSLISTDIALOG_H
+#ifndef TASKPROPERTIESDIALOG_H
+#define TASKPROPERTIESDIALOG_H
 
 #include <QDialog>
 
+#include "task.h"
+
 namespace Ui {
-class EventsListDialog;
+class TaskPropertiesDialog;
 }
 
-class EventsListDialog : public QDialog
+class TaskPropertiesDialog : public QDialog
 {
     Q_OBJECT
     
 public:
-    explicit EventsListDialog(QWidget *parent = 0);
-    ~EventsListDialog();
+    explicit TaskPropertiesDialog(QWidget *parent = 0);
+    ~TaskPropertiesDialog();
+    void setTask(Task* task);
     
 private:
-    Ui::EventsListDialog *ui;
+    Ui::TaskPropertiesDialog *ui;
+    Task* m_currentTask;
 };
 
-#endif // EVENTSLISTDIALOG_H
+#endif // TASKPROPERTIESDIALOG_H

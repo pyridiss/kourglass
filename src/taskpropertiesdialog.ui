@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>EventsListDialog</class>
- <widget class="QDialog" name="EventsListDialog">
+ <class>TaskPropertiesDialog</class>
+ <widget class="QDialog" name="TaskPropertiesDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,13 +11,13 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Task properties</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tabProperties">
       <attribute name="title">
@@ -67,7 +67,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tabEventsList">
+     <widget class="QWidget" name="tabTaskProperties">
       <attribute name="title">
        <string>Events list</string>
       </attribute>
@@ -165,7 +165,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>EventsListDialog</receiver>
+   <receiver>TaskPropertiesDialog</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -181,7 +181,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>EventsListDialog</receiver>
+   <receiver>TaskPropertiesDialog</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">

@@ -8,6 +8,7 @@
 #include "mainview.h"
 #include "newprojectdialog.h"
 #include "newtaskdialog.h"
+#include "taskpropertiesdialog.h"
 
 class MainWindow : public KXmlGuiWindow
 {
@@ -19,7 +20,9 @@ class MainWindow : public KXmlGuiWindow
     private:
         NewProjectDialog* m_addProjectDialog;
         NewTaskDialog* m_addTaskDialog;
+        TaskPropertiesDialog* m_taskPropertiesDialog;
         MainView* m_mainView;
+
         QString m_currentProject;
         QString m_currentTask;
         Storage* m_storage;
@@ -33,6 +36,7 @@ class MainWindow : public KXmlGuiWindow
         void startCurrentTask();
         void stopCurrentTask();
         void removeCurrentTask();
+        void showTaskProperties();
 };
 
 #endif // MAINWINDOW_H

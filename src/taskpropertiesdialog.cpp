@@ -1,14 +1,20 @@
-#include "eventslistdialog.h"
-#include "ui_eventslistdialog.h"
+#include "taskpropertiesdialog.h"
+#include "ui_taskpropertiesdialog.h"
 
-EventsListDialog::EventsListDialog(QWidget *parent) :
+TaskPropertiesDialog::TaskPropertiesDialog(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::EventsListDialog)
+    ui(new Ui::TaskPropertiesDialog)
 {
     ui->setupUi(this);
+    m_currentTask = nullptr;
 }
 
-EventsListDialog::~EventsListDialog()
+TaskPropertiesDialog::~TaskPropertiesDialog()
 {
     delete ui;
+}
+
+void TaskPropertiesDialog::setTask(Task* task)
+{
+    m_currentTask = task;
 }

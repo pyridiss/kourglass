@@ -11,6 +11,7 @@ MainWindow::MainWindow(QWidget *parent) : KXmlGuiWindow(parent)
 {
     m_mainView = new MainView(this);
     m_storage = new Storage();
+    m_taskPropertiesDialog = new TaskPropertiesDialog(this);
     setCentralWidget(m_mainView);
 
     m_addProjectDialog = new NewProjectDialog();
@@ -58,12 +59,18 @@ void MainWindow::setupActions()
     deleteTaskEventsAction->setIcon(KIcon("edit-clear-list"));
     deleteTaskEventsAction->setShortcut(Qt::CTRL + Qt::Key_D);
 
+    KAction* taskPropertiesAction = new KAction(this);
+    taskPropertiesAction->setText(i18n("&Task properties"));
+    taskPropertiesAction->setIcon(KIcon("configure"));
+    taskPropertiesAction->setShortcut(Qt::Key_P);
+
     actionCollection()->addAction("new-project", newProjectAction);
     actionCollection()->addAction("new-task", newTaskAction);
     actionCollection()->addAction("start-task", startTaskAction);
     actionCollection()->addAction("stop-task", stopTaskAction);
     actionCollection()->addAction("remove-task", removeTaskAction);
     actionCollection()->addAction("delete-task-events", deleteTaskEventsAction);
+    actionCollection()->addAction("task-properties", taskPropertiesAction);
 
     connect(newProjectAction, SIGNAL(triggered(bool)), m_addProjectDialog, SLOT(show()));
     connect(newTaskAction, SIGNAL(triggered(bool)), m_addTaskDialog, SLOT(show()));
@@ -71,6 +78,7 @@ void MainWindow::setupActions()
     connect(stopTaskAction, SIGNAL(triggered(bool)), this, SLOT(stopCurrentTask()));
     connect(removeTaskAction, SIGNAL(triggered(bool)), this, SLOT(removeCurrentTask()));
     connect(deleteTaskEventsAction, SIGNAL(triggered(bool)), this, SLOT(removeCurrentTask()));
+    connect(taskPropertiesAction, SIGNAL(triggered(bool)), this, SLOT(showTaskProperties()));
 
     connect(m_mainView, SIGNAL(projectChanged(const QString&)), this, SLOT(changeCurrentProject(const QString&)));
     connect(m_mainView, SIGNAL(taskChanged(QTreeWidgetItem*)), this, SLOT(setCurrentTask(QTreeWidgetItem*)));
@@ -132,4 +140,13 @@ void MainWindow::stopCurrentTask()
 void MainWindow::removeCurrentTask()
 {
     m_storage->removeTask(m_currentTask);
+}
+
+void MainWindow::showTaskProperties()
+{
+    if (m_storage->m_tasks.find(m_currentTask) != m_storage->m_tasks.end())
+    {
+        m_taskPropertiesDialog->setTask(m_storage->m_tasks[m_currentTask]);
+        m_taskPropertiesDialog->show();
+    }
 }
