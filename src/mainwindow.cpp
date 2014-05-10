@@ -121,31 +121,15 @@ void MainWindow::setCurrentTask(QTreeWidgetItem* cur)
 
 void MainWindow::startCurrentTask()
 {
-    if (m_storage->m_tasks.find(m_currentTask) != m_storage->m_tasks.end())
-    {
-        m_storage->m_tasks[m_currentTask]->m_widgetItem->setIcon(0, KIcon("arrow-right"));
-        m_storage->m_tasks[m_currentTask]->start();
-    }
+    m_storage->startTask(m_currentTask);
 }
 
 void MainWindow::stopCurrentTask()
 {
-    if (m_storage->m_tasks.find(m_currentTask) != m_storage->m_tasks.end())
-    {
-        if (!m_storage->m_tasks[m_currentTask]->running) return;
-        m_storage->m_tasks[m_currentTask]->m_widgetItem->setIcon(0, KIcon("media-playback-pause"));
-        m_storage->m_tasks[m_currentTask]->stop();
-    }
+    m_storage->stopTask(m_currentTask);
 }
 
 void MainWindow::removeCurrentTask()
 {
-    if (m_storage->m_tasks.find(m_currentTask) != m_storage->m_tasks.end())
-    {
-        if (m_storage->m_tasks[m_currentTask]->m_parent != nullptr)
-        {
-            m_storage->m_tasks[m_currentTask]->m_parent->m_widgetItem->removeChild(m_storage->m_tasks[m_currentTask]->m_widgetItem);
-            m_storage->m_tasks.remove(m_currentTask);
-        }
-    }
+    m_storage->removeTask(m_currentTask);
 }

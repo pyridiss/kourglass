@@ -19,6 +19,11 @@ class Storage : public QObject
     public:
         QMap<QString, Task*> m_tasks;
 
+    public:
+        void startTask(QString& task);
+        void stopTask(QString& task);
+        void removeTask(QString& task);
+
     signals:
         void tasksChanged();
 

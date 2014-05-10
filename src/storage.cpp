@@ -1,3 +1,5 @@
+#include <KIcon>
+
 #include "storage.h"
 
 Storage::Storage()
@@ -14,6 +16,38 @@ Storage::~Storage()
     }
     m_tasks.clear();
 }
+
+void Storage::startTask(QString& task)
+{
+    if (m_tasks.find(task) != m_tasks.end())
+    {
+        m_tasks[task]->m_widgetItem->setIcon(0, KIcon("arrow-right"));
+        m_tasks[task]->start();
+    }
+}
+
+void Storage::stopTask(QString& task)
+{
+    if (m_tasks.find(task) != m_tasks.end())
+    {
+        if (!m_tasks[task]->running) return;
+        m_tasks[task]->m_widgetItem->setIcon(0, KIcon("media-playback-pause"));
+        m_tasks[task]->stop();
+    }
+}
+
+void Storage::removeTask(QString& task)
+{
+    if (m_tasks.find(task) != m_tasks.end())
+    {
+        if (m_tasks[task]->m_parent != nullptr)
+        {
+            m_tasks[task]->m_parent->m_widgetItem->removeChild(m_tasks[task]->m_widgetItem);
+            m_tasks.remove(task);
+        }
+    }
+}
+
 
 QTreeWidgetItem* Storage::addProject(QString& name)
 {
