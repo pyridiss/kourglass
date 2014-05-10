@@ -3,6 +3,41 @@
 
 #include <QTableWidgetItem>
 #include <KIcon>
+#include <QItemDelegate>
+#include <QDateTimeEdit>
+
+class TaskPropertiesDateTimeEditDelegate : public QItemDelegate
+{
+    public:
+        TaskPropertiesDateTimeEditDelegate(QObject *parent = 0) : QItemDelegate(parent)
+        {
+        }
+
+        QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem&, const QModelIndex&) const
+        {
+            QDateTimeEdit *editor = new QDateTimeEdit(parent);
+            return editor;
+        }
+
+        void setEditorData(QWidget *editor, const QModelIndex &index) const
+        {
+            QDateTime dateTime = QDateTime::fromString(index.model()->data(index, Qt::DisplayRole).toString());
+            QDateTimeEdit *dateTimeWidget = dynamic_cast<QDateTimeEdit*>(editor);
+            dateTimeWidget->setDateTime(dateTime);
+        }
+
+        void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
+        {
+            QDateTimeEdit *dateTimeWidget = dynamic_cast<QDateTimeEdit*>(editor);
+            QDateTime dateTime = dateTimeWidget->dateTime();
+            model->setData(index, dateTime.toString(), Qt::EditRole);
+        }
+
+        void updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex&) const
+        {
+            editor->setGeometry(option.rect);
+        }
+};
 
 TaskPropertiesDialog::TaskPropertiesDialog(QWidget *parent) :
     QDialog(parent),
@@ -12,6 +47,10 @@ TaskPropertiesDialog::TaskPropertiesDialog(QWidget *parent) :
     ui->addEventButton->setIcon(KIcon("list-add"));
     ui->deleteEventButton->setIcon(KIcon("list-remove"));
     m_currentTask = nullptr;
+
+    TaskPropertiesDateTimeEditDelegate *widgetDelegate = new TaskPropertiesDateTimeEditDelegate(ui->tableEvents);
+    ui->tableEvents->setItemDelegateForColumn(1, widgetDelegate);
+    ui->tableEvents->setItemDelegateForColumn(2, widgetDelegate);
 }
 
 TaskPropertiesDialog::~TaskPropertiesDialog()
@@ -34,12 +73,15 @@ void TaskPropertiesDialog::updateTableEvents()
     for (auto& i : m_currentTask->m_events)
     {
         ui->tableEvents->insertRow(row);
+
         QTableWidgetItem *name = new QTableWidgetItem();
         name->setText(i->m_name);
         ui->tableEvents->setItem(row, 0, name);
+
         QTableWidgetItem *start = new QTableWidgetItem();
         start->setText(i->m_startTime.toString());
         ui->tableEvents->setItem(row, 1, start);
+
         QTableWidgetItem *end = new QTableWidgetItem();
         end->setText(i->m_endTime.toString());
         ui->tableEvents->setItem(row, 2, end);
