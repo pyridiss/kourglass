@@ -5,7 +5,7 @@ include_directories(
 )
 
 set(timetrak_SRCS
-    eventslistdialog.cpp
+    taskpropertiesdialog.cpp
     neweventdialog.cpp
     newprojectdialog.cpp
     newtaskdialog.cpp
@@ -18,7 +18,7 @@ set(timetrak_SRCS
 )
 
 kde4_add_ui_files(timetrak_SRCS
-                  eventslistdialog.ui
+                  taskpropertiesdialog.ui
                   neweventdialog.ui
                   newprojectdialog.ui
                   newtaskdialog.ui
