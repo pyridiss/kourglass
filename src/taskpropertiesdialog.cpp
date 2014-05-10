@@ -48,12 +48,15 @@ TaskPropertiesDialog::TaskPropertiesDialog(QWidget *parent) :
     ui->deleteEventButton->setIcon(KIcon("list-remove"));
     connect(ui->addEventButton, SIGNAL(released()), this, SLOT(addEvent()));
     connect(ui->deleteEventButton, SIGNAL(released()), this, SLOT(deleteEvent()));
+    connect(this, SIGNAL(accepted()), this, SLOT(updateTask()));
 
     m_currentTask = nullptr;
 
     TaskPropertiesDateTimeEditDelegate *widgetDelegate = new TaskPropertiesDateTimeEditDelegate(ui->tableEvents);
-    ui->tableEvents->setItemDelegateForColumn(1, widgetDelegate);
     ui->tableEvents->setItemDelegateForColumn(2, widgetDelegate);
+    ui->tableEvents->setItemDelegateForColumn(3, widgetDelegate);
+
+    ui->tableEvents->setColumnHidden(0, true);
 }
 
 TaskPropertiesDialog::~TaskPropertiesDialog()
@@ -81,17 +84,22 @@ void TaskPropertiesDialog::updateTableEvents()
     {
         ui->tableEvents->insertRow(row);
 
+        QTableWidgetItem *uid = new QTableWidgetItem();
+        uid->setText(i->getUid());
+        ui->tableEvents->setItem(row, 0, uid);
+
         QTableWidgetItem *name = new QTableWidgetItem();
         name->setText(i->m_name);
-        ui->tableEvents->setItem(row, 0, name);
+        ui->tableEvents->setItem(row, 1, name);
 
         QTableWidgetItem *start = new QTableWidgetItem();
         start->setText(i->m_startTime.toString());
-        ui->tableEvents->setItem(row, 1, start);
+        ui->tableEvents->setItem(row, 2, start);
 
         QTableWidgetItem *end = new QTableWidgetItem();
         end->setText(i->m_endTime.toString());
-        ui->tableEvents->setItem(row, 2, end);
+        ui->tableEvents->setItem(row, 3, end);
+
         ++row;
     }
     ui->tableEvents->resizeColumnsToContents();
@@ -99,11 +107,27 @@ void TaskPropertiesDialog::updateTableEvents()
 
 void TaskPropertiesDialog::updateTask()
 {
-    
+    QTableWidgetItem* item = nullptr;
+    Event* event = nullptr;
+    for (int i = 0 ; i < ui->tableEvents->rowCount() ; ++i)
+    {
+        item = ui->tableEvents->item(i, 0);
+        if (m_currentTask->m_events.find(item->text()) != m_currentTask->m_events.end())
+        {
+            event = m_currentTask->m_events[item->text()];
+            item = ui->tableEvents->item(i, 1);
+            event->m_name = item->text();
+            item = ui->tableEvents->item(i, 2);
+            event->m_startTime = QDateTime::fromString(item->text());
+            item = ui->tableEvents->item(i, 3);
+            event->m_endTime = QDateTime::fromString(item->text());
+        }
+    }
 }
 
 void TaskPropertiesDialog::addEvent()
 {
+    updateTask();
     m_currentTask->start();
     m_currentTask->stop();
     updateTableEvents();

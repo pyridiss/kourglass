@@ -24,9 +24,9 @@ private:
     
 private:
     void updateTableEvents();
-    void updateTask();
 
 public slots:
+    void updateTask();
     void addEvent();
     void deleteEvent();
 };

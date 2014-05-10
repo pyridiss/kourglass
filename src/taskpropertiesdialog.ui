@@ -141,9 +141,20 @@
          </item>
          <item>
           <widget class="QTableWidget" name="tableEvents">
+           <property name="verticalScrollMode">
+            <enum>QAbstractItemView::ScrollPerPixel</enum>
+           </property>
+           <property name="horizontalScrollMode">
+            <enum>QAbstractItemView::ScrollPerPixel</enum>
+           </property>
            <attribute name="horizontalHeaderStretchLastSection">
             <bool>true</bool>
            </attribute>
+           <column>
+            <property name="text">
+             <string>UID</string>
+            </property>
+           </column>
            <column>
             <property name="text">
              <string>Event name</string>
