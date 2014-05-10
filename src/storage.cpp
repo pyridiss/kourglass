@@ -30,7 +30,7 @@ void Storage::stopTask(QString& task)
 {
     if (m_tasks.find(task) != m_tasks.end())
     {
-        if (!m_tasks[task]->running) return;
+        if (!m_tasks[task]->m_running) return;
         m_tasks[task]->m_widgetItem->setIcon(0, KIcon("media-playback-pause"));
         m_tasks[task]->stop();
     }
@@ -75,11 +75,11 @@ void Storage::updateDuration()
 {
     for (auto& i : m_tasks)
     {
-        if (i->running)
+        if (i->m_running)
             i->addRunningTime();
     }
     for (auto& i : m_tasks)
     {
-        i->m_widgetItem->setText(1, i->currentDuration.toString());
+        i->m_widgetItem->setText(1, i->m_currentDuration.toString());
     }
 }

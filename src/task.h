@@ -3,8 +3,10 @@
 
 #include <QString>
 #include <QTreeWidgetItem>
-#include <QDateTime>
 #include <QTime>
+#include <QMap>
+
+#include "event.h"
 
 class Task
 {
@@ -14,15 +16,17 @@ class Task
         Task* m_parent;
         QString m_project;
         QTreeWidgetItem* m_widgetItem;
-        QTime currentDuration;
-        bool running;
+        QTime m_currentDuration;
+        bool m_running;
 
     private:
-        QDateTime startTime;
-        QTime runningTime;
+        QMap<QString, Event*> m_events;
+        QString m_currentEvent;
+        QTime m_runningTime;
 
     public:
         Task();
+        ~Task();
         void start();
         void stop();
         void addRunningTime(int msecs = 0);
