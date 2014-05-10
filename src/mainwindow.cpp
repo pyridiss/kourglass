@@ -34,12 +34,12 @@ void MainWindow::setupActions()
     newProjectAction->setShortcut(Qt::Key_N);
 
     KAction* newTaskAction = new KAction(this);
-    newTaskAction->setText(i18n("&New task"));
+    newTaskAction->setText(i18n("&New sub-task"));
     newTaskAction->setIcon(KIcon("go-next-view-page"));
     newTaskAction->setShortcut(Qt::CTRL + Qt::Key_N);
 
     KAction* startTaskAction = new KAction(this);
-    startTaskAction->setText(i18n("&Run"));
+    startTaskAction->setText(i18n("&Start"));
     startTaskAction->setIcon(KIcon("media-playback-start"));
     startTaskAction->setShortcut(Qt::Key_R);
 
@@ -48,15 +48,29 @@ void MainWindow::setupActions()
     stopTaskAction->setIcon(KIcon("media-playback-stop"));
     stopTaskAction->setShortcut(Qt::Key_S);
 
+    KAction* removeTaskAction = new KAction(this);
+    removeTaskAction->setText(i18n("&Remove task"));
+    removeTaskAction->setIcon(KIcon("edit-delete"));
+    removeTaskAction->setShortcut(Qt::Key_D);
+
+    KAction* deleteTaskEventsAction = new KAction(this);
+    deleteTaskEventsAction->setText(i18n("&Delete task and related events"));
+    deleteTaskEventsAction->setIcon(KIcon("edit-clear-list"));
+    deleteTaskEventsAction->setShortcut(Qt::CTRL + Qt::Key_D);
+
     actionCollection()->addAction("new-project", newProjectAction);
     actionCollection()->addAction("new-task", newTaskAction);
     actionCollection()->addAction("start-task", startTaskAction);
     actionCollection()->addAction("stop-task", stopTaskAction);
+    actionCollection()->addAction("remove-task", removeTaskAction);
+    actionCollection()->addAction("delete-task-events", deleteTaskEventsAction);
 
     connect(newProjectAction, SIGNAL(triggered(bool)), m_addProjectDialog, SLOT(show()));
     connect(newTaskAction, SIGNAL(triggered(bool)), m_addTaskDialog, SLOT(show()));
     connect(startTaskAction, SIGNAL(triggered(bool)), this, SLOT(startCurrentTask()));
     connect(stopTaskAction, SIGNAL(triggered(bool)), this, SLOT(stopCurrentTask()));
+    connect(removeTaskAction, SIGNAL(triggered(bool)), this, SLOT(removeCurrentTask()));
+    connect(deleteTaskEventsAction, SIGNAL(triggered(bool)), this, SLOT(removeCurrentTask()));
 
     connect(m_mainView, SIGNAL(projectChanged(const QString&)), this, SLOT(changeCurrentProject(const QString&)));
     connect(m_mainView, SIGNAL(taskChanged(QTreeWidgetItem*)), this, SLOT(setCurrentTask(QTreeWidgetItem*)));
@@ -121,5 +135,17 @@ void MainWindow::stopCurrentTask()
         if (!m_storage->m_tasks[m_currentTask]->running) return;
         m_storage->m_tasks[m_currentTask]->m_widgetItem->setIcon(0, KIcon("media-playback-pause"));
         m_storage->m_tasks[m_currentTask]->stop();
+    }
+}
+
+void MainWindow::removeCurrentTask()
+{
+    if (m_storage->m_tasks.find(m_currentTask) != m_storage->m_tasks.end())
+    {
+        if (m_storage->m_tasks[m_currentTask]->m_parent != nullptr)
+        {
+            m_storage->m_tasks[m_currentTask]->m_parent->m_widgetItem->removeChild(m_storage->m_tasks[m_currentTask]->m_widgetItem);
+            m_storage->m_tasks.remove(m_currentTask);
+        }
     }
 }

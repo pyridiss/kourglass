@@ -11,8 +11,12 @@
             <Action name="new-project" />
         </Menu>
         <Menu >
-            <text>Actions</text>
+            <text>Task</text>
             <Action name="new-task" />
+            <Action name="start-task" />
+            <Action name="stop-task" />
+            <Action name="remove-task" />
+            <Action name="delete-task-events" />
         </Menu >
     </MenuBar>
 
@@ -22,6 +26,8 @@
         <Action name="new-task" />
         <Action name="start-task" />
         <Action name="stop-task" />
+        <Action name="remove-task" />
+        <Action name="delete-task-events" />
     </ToolBar>
 
 </gui>
