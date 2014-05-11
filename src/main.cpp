@@ -24,5 +24,8 @@ int main (int argc, char *argv[])
     MainWindow* window = new MainWindow();
     window->show();
 
-    return app.exec();
+    int ret = app.exec();
+
+    delete window;
+    return ret;
 }

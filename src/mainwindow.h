@@ -17,7 +17,7 @@ class MainWindow : public KXmlGuiWindow
 
     public:
         MainWindow(QWidget *parent=0);
-        ~MainWindow();
+        virtual ~MainWindow();
 
     private:
         NewProjectDialog* m_addProjectDialog;
