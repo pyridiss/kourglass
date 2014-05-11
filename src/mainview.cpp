@@ -1,13 +1,15 @@
 #include "mainview.h"
 #include "ui_mainview.h"
 
+#include <QList>
+
 MainView::MainView(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::MainView)
 {
     ui->setupUi(this);
     connect(ui->selectProject, SIGNAL(activated(const QString&)), this, SLOT(changeProject(const QString&)));
-    connect(ui->treeWidget, SIGNAL(itemClicked(QTreeWidgetItem*, int)), this, SLOT(changeSelectedTask(QTreeWidgetItem*)));
+    connect(ui->treeWidget, SIGNAL(itemSelectionChanged()), this, SLOT(changeSelectedTask()));
 }
 
 MainView::~MainView()
@@ -33,7 +35,7 @@ void MainView::changeProject(const QString& selectedProject)
     emit projectChanged(selectedProject);
 }
 
-void MainView::changeSelectedTask(QTreeWidgetItem* selectedTask)
+void MainView::changeSelectedTask()
 {
-    emit taskChanged(selectedTask);
+    emit taskChanged(ui->treeWidget->selectedItems().first());
 }

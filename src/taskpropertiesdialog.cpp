@@ -137,5 +137,15 @@ void TaskPropertiesDialog::addEvent()
 
 void TaskPropertiesDialog::deleteEvent()
 {
-    
+    updateTask();
+    QString uidToRemove = ui->tableEvents->item(ui->tableEvents->currentRow(), 0)->text();
+
+    if (m_currentTask->m_events.find(uidToRemove) != m_currentTask->m_events.end())
+    {
+        delete m_currentTask->m_events[uidToRemove];
+        m_currentTask->m_events[uidToRemove] = nullptr;
+        m_currentTask->m_events.remove(uidToRemove);
+    }
+
+    updateTableEvents();
 }

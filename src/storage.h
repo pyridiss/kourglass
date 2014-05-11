@@ -22,7 +22,7 @@ class Storage : public QObject
     public:
         void startTask(QString& task);
         void stopTask(QString& task);
-        void removeTask(QString& task);
+        void removeTask(QString task);
 
     signals:
         void tasksChanged();

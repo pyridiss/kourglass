@@ -36,13 +36,19 @@ void Storage::stopTask(QString& task)
     }
 }
 
-void Storage::removeTask(QString& task)
+void Storage::removeTask(QString task)
 {
+    //Be careful: task MUST NOT be a reference, as m_currentTask will change when the tree widget is updated
+
     if (m_tasks.find(task) != m_tasks.end())
     {
-        if (m_tasks[task]->m_parent != nullptr)
+        Task* toRemove = m_tasks[task];
+        if (toRemove->m_parent != nullptr)
         {
-            m_tasks[task]->m_parent->m_widgetItem->removeChild(m_tasks[task]->m_widgetItem);
+            toRemove->m_parent->m_widgetItem->removeChild(toRemove->m_widgetItem);
+            toRemove->m_parent->m_children.removeOne(toRemove);
+            delete toRemove;
+            m_tasks[task] = nullptr;
             m_tasks.remove(task);
         }
     }

@@ -30,6 +30,12 @@ MainWindow::MainWindow(QWidget *parent) : KXmlGuiWindow(parent)
     setupActions();
 }
 
+MainWindow::~MainWindow()
+{
+    delete m_storage;
+    m_storage = nullptr;
+}
+
 void MainWindow::setupActions()
 {
     KAction* newProjectAction = new KAction(this);

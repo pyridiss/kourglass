@@ -30,7 +30,7 @@ signals:
 
 public slots:
     void changeProject(const QString& selectedProject);
-    void changeSelectedTask(QTreeWidgetItem* selectedTask);
+    void changeSelectedTask();
 };
 
 #endif // MAINVIEW_H
