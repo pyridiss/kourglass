@@ -31,6 +31,9 @@ class MainWindow : public KXmlGuiWindow
         Storage* m_storage;
         void setupActions();
 
+    signals:
+        void currentTaskIsRealTask(bool);
+
     public slots:
         void changeCurrentProject(const QString& cur);
         void addProject(QString& name);

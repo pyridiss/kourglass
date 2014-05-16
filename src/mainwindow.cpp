@@ -10,9 +10,14 @@
 MainWindow::MainWindow(QWidget *parent) : KXmlGuiWindow(parent)
 {
     m_mainView = new MainView(this);
-    m_storage = new Storage();
-    m_taskPropertiesDialog = new TaskPropertiesDialog(this);
+    connect(m_mainView, SIGNAL(projectChanged(const QString&)), this, SLOT(changeCurrentProject(const QString&)));
+    connect(m_mainView, SIGNAL(taskChanged(QTreeWidgetItem*)), this, SLOT(setCurrentTask(QTreeWidgetItem*)));
     setCentralWidget(m_mainView);
+
+    m_storage = new Storage();
+
+    m_taskPropertiesDialog = new TaskPropertiesDialog(this);
+    connect(m_taskPropertiesDialog, SIGNAL(allDurationsChanged()), m_storage, SLOT(computeAllDurations()));
 
     m_addProjectDialog = new NewProjectDialog();
     connect(m_addProjectDialog, SIGNAL(projectAccepted(QString&)), this, SLOT(addProject(QString&)));
@@ -90,10 +95,7 @@ void MainWindow::setupActions()
     connect(deleteTaskEventsAction, SIGNAL(triggered(bool)), this, SLOT(removeCurrentTask()));
     connect(taskPropertiesAction, SIGNAL(triggered(bool)), this, SLOT(showTaskProperties()));
 
-    connect(m_mainView, SIGNAL(projectChanged(const QString&)), this, SLOT(changeCurrentProject(const QString&)));
-    connect(m_mainView, SIGNAL(taskChanged(QTreeWidgetItem*)), this, SLOT(setCurrentTask(QTreeWidgetItem*)));
-
-    connect(m_taskPropertiesDialog, SIGNAL(allDurationsChanged()), m_storage, SLOT(computeAllDurations()));
+    connect(this, SIGNAL(currentTaskIsRealTask(bool)), removeTaskAction, SLOT(setEnabled(bool)));
 
     KStandardAction::quit(kapp, SLOT(quit()), actionCollection());
 
@@ -135,7 +137,10 @@ void MainWindow::setCurrentTask(QTreeWidgetItem* cur)
     for (auto& i : m_storage->m_tasks)
     {
         if (i->m_widgetItem == cur)
+        {
             m_currentTask = i->m_uid;
+            emit currentTaskIsRealTask((i->m_parent != nullptr));
+        }
     }
 }
 
