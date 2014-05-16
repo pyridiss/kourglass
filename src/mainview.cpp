@@ -2,6 +2,11 @@
 #include "ui_mainview.h"
 
 #include <QList>
+#include <KJob>
+
+#include <akonadi/collectionfetchjob.h>
+
+using namespace Akonadi;
 
 MainView::MainView(QWidget *parent) :
     QWidget(parent),
@@ -38,4 +43,20 @@ void MainView::changeProject(const QString& selectedProject)
 void MainView::changeSelectedTask()
 {
     emit taskChanged(ui->treeWidget->selectedItems().first());
+}
+
+void MainView::updateCalendarsList(KJob *job)
+{
+    if (job->error()) return;
+
+    CollectionFetchJob *fetchJob = qobject_cast<CollectionFetchJob*>(job);
+
+    const Collection::List collections = fetchJob->collections();
+    for (auto& collection : collections)
+    {
+        if (collection.contentMimeTypes().contains("application/x-vnd.akonadi.calendar.todo"))
+        {
+            ui->listCalendars->addItem(collection.name());
+        }
+    }
 }

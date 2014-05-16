@@ -2,6 +2,7 @@ project(timetrak)
 
 include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
+    ${AKONADI_INCLUDE_DIR}
 )
 
 set(timetrak_SRCS
@@ -18,15 +19,22 @@ set(timetrak_SRCS
 )
 
 kde4_add_ui_files(timetrak_SRCS
-                  taskpropertiesdialog.ui
-                  neweventdialog.ui
-                  newprojectdialog.ui
-                  newtaskdialog.ui
-                  mainview.ui)
+    taskpropertiesdialog.ui
+    neweventdialog.ui
+    newprojectdialog.ui
+    newtaskdialog.ui
+    mainview.ui
+)
 
-kde4_add_executable(timetrak ${timetrak_SRCS})
+kde4_add_executable(timetrak
+    ${timetrak_SRCS}
+)
 
-target_link_libraries(timetrak ${KDE4_KDEUI_LIBS})
+target_link_libraries(timetrak
+    ${KDE4_KDEUI_LIBS}
+    ${KDEPIMLIBS_AKONADI_LIBS}
+    akonadi-kde
+)
 
 set_target_properties(timetrak PROPERTIES COMPILE_FLAGS "-std=c++11 -g -Wall")
 
