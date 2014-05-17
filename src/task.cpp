@@ -19,8 +19,6 @@ Task::~Task()
         i = nullptr;
     }
     m_events.clear();
-    delete m_widgetItem;
-    m_widgetItem = nullptr;
 }
 
 void Task::start()
