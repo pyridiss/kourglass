@@ -37,6 +37,7 @@ class MainWindow : public KXmlGuiWindow
     public slots:
         void changeCurrentProject(const QString& cur);
         void addProject(QString& name);
+        void addProjectLoaded(QString& name, QTreeWidgetItem* project);
         void addTask(QString& name);
         void setCurrentTask(QTreeWidgetItem* cur);
         void startCurrentTask();

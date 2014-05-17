@@ -35,10 +35,6 @@ class Task
         void addRunningTime(int msecs = 0, bool addToParent = true);
         void addChild(Task* child);
         void computeDuration();
-
-    private:
-        void setUid();
-
 };
 
 #endif //TASK_H

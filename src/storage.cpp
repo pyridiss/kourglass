@@ -1,6 +1,9 @@
 #include <KIcon>
 
 #include <akonadi/collection.h>
+#include <akonadi/itemfetchjob.h>
+#include <akonadi/itemfetchscope.h>
+#include <kcalcore/incidence.h>
 
 #include "storage.h"
 
@@ -19,6 +22,12 @@ Storage::~Storage()
         i = nullptr;
     }
     m_tasks.clear();
+}
+
+QString Storage::getNewUid()
+{
+    static unsigned int uid = 0;
+    return QVariant(++uid).toString();
 }
 
 void Storage::startTask(QString& task)
@@ -58,21 +67,22 @@ void Storage::removeTask(QString task)
     }
 }
 
-
-QTreeWidgetItem* Storage::addProject(QString& name)
+QTreeWidgetItem* Storage::addProject(QString& name, QString uid)
 {
     Task* newProject = new Task();
-    m_tasks.insert(newProject->m_uid, newProject);
+    newProject->m_uid = uid;
+    m_tasks.insert(uid, newProject);
     newProject->m_widgetItem->setText(0, name);
     newProject->m_widgetItem->setText(1, "00:00:00");
     newProject->m_name = name;
     return newProject->m_widgetItem;
 }
 
-QTreeWidgetItem* Storage::addTask(QString& project, Task* parent, QString& name)
+QTreeWidgetItem* Storage::addTask(QString& project, Task* parent, QString& name, QString uid)
 {
     Task* newTask = new Task();
-    m_tasks.insert(newTask->m_uid, newTask);
+    newTask->m_uid = uid;
+    m_tasks.insert(uid, newTask);
     newTask->m_widgetItem->setText(0, name);
     newTask->m_widgetItem->setText(1, "00:00:00");
     newTask->m_name = name;
@@ -106,4 +116,56 @@ void Storage::computeAllDurations()
 
 void Storage::loadCalendar(const Collection& newCalendar)
 {
+    m_tasks.clear();
+
+    ItemFetchJob *job = new ItemFetchJob( newCalendar );
+    connect(job, SIGNAL(result(KJob*)), this, SLOT(newJobFromLoading(KJob*)));
+    job->fetchScope().fetchFullPayload();
+}
+
+void Storage::newJobFromLoading(KJob *job)
+{
+    if (job->error()) return;
+
+    ItemFetchJob *fetchJob = qobject_cast<ItemFetchJob*>(job);
+
+    const Item::List items = fetchJob->items();
+    for (const Item &item : items)
+    {
+        if (item.mimeType() == QString("application/x-vnd.akonadi.calendar.todo"))
+            if (item.hasPayload<QSharedPointer<KCalCore::Incidence>>())
+            {
+                QSharedPointer<KCalCore::Incidence> incidence = item.payload<QSharedPointer<KCalCore::Incidence>>();
+                if (incidence->relatedTo() == QString(""))
+                {
+                    QString name = incidence->summary();
+                    QTreeWidgetItem* project = addProject(name, incidence->uid());
+                    emit projectLoaded(name, project);
+                    findChildrenOf(incidence->uid(), fetchJob, incidence->uid());
+                }
+            }
+
+    }
+}
+
+void Storage::findChildrenOf(QString parent, ItemFetchJob *fetchJob, QString project)
+{
+    const Item::List items = fetchJob->items();
+    for (const Item &item : items)
+    {
+        if (item.mimeType() == QString("application/x-vnd.akonadi.calendar.todo"))
+            if (item.hasPayload<QSharedPointer<KCalCore::Incidence>>())
+            {
+                QSharedPointer<KCalCore::Incidence> incidence = item.payload<QSharedPointer<KCalCore::Incidence>>();
+                if (incidence->relatedTo() == parent)
+                {
+                    QString name = incidence->summary();
+                    QTreeWidgetItem* task = addTask(project, m_tasks[parent], name, incidence->uid());
+                    m_tasks[parent]->m_widgetItem->addChild(task);
+                    m_tasks[parent]->m_widgetItem->setExpanded(true);
+                    findChildrenOf(incidence->uid(), fetchJob, project);
+                }
+            }
+
+    }
 }

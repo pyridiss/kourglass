@@ -10,7 +10,7 @@
 MainWindow::MainWindow(QWidget *parent) : KXmlGuiWindow(parent)
 {
     m_storage = new Storage();
-    connect(m_storage, SIGNAL(projectLoaded(QString&)), this, SLOT(addProject(QString&)));
+    connect(m_storage, SIGNAL(projectLoaded(QString&, QTreeWidgetItem*)), this, SLOT(addProjectLoaded(QString&, QTreeWidgetItem*)));
 
     m_mainView = new MainView(this);
     connect(m_mainView, SIGNAL(projectChanged(const QString&)), this, SLOT(changeCurrentProject(const QString&)));
@@ -120,6 +120,12 @@ void MainWindow::changeCurrentProject(const QString& cur)
 void MainWindow::addProject(QString& name)
 {
     QTreeWidgetItem* project = m_storage->addProject(name);
+    m_mainView->addProject(name, project);
+    changeCurrentProject(name);
+}
+
+void MainWindow::addProjectLoaded(QString& name, QTreeWidgetItem* project)
+{
     m_mainView->addProject(name, project);
     changeCurrentProject(name);
 }
