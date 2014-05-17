@@ -39,6 +39,7 @@ public slots:
     void changeSelectedTask();
     void changeCalendar(const Akonadi::Collection& newCollection);
     void clearTreeWidget();
+    void resizeColumn();
 };
 
 #endif // MAINVIEW_H

@@ -31,6 +31,7 @@ MainView::MainView(QWidget *parent) :
     ui->listCalendars->setModel(filterModel);
 
     connect(ui->listCalendars, SIGNAL(currentChanged(const Akonadi::Collection&)), this, SLOT(changeCalendar(const Akonadi::Collection&)));
+    connect(ui->treeWidget, SIGNAL(itemExpanded(QTreeWidgetItem*)), this, SLOT(resizeColumn()));
 }
 
 MainView::~MainView()
@@ -49,6 +50,11 @@ void MainView::addProject(QString& name, QTreeWidgetItem* item)
     ui->selectProject->addItem(name);
     ui->selectProject->setCurrentIndex(ui->selectProject->count()-1);
     ui->treeWidget->addTopLevelItem(item);
+}
+
+void MainView::resizeColumn()
+{
+    ui->treeWidget->resizeColumnToContents(0);
 }
 
 void MainView::changeTreeView(Task* oldRoot, Task* newRoot)
