@@ -4,6 +4,7 @@
 #include <akonadi/itemfetchjob.h>
 #include <akonadi/itemfetchscope.h>
 #include <kcalcore/incidence.h>
+#include <kcalcore/event.h>
 
 #include "storage.h"
 
@@ -148,10 +149,11 @@ void Storage::newJobFromLoading(KJob *job)
                     QTreeWidgetItem* project = addProject(name, incidence->uid());
                     emit projectLoaded(name, project);
                     findChildrenOf(incidence->uid(), fetchJob, incidence->uid());
+                    findEventsRelated(incidence->uid(), fetchJob);
                 }
             }
-
     }
+    computeAllDurations();
 }
 
 void Storage::findChildrenOf(QString parent, ItemFetchJob *fetchJob, QString project)
@@ -170,8 +172,32 @@ void Storage::findChildrenOf(QString parent, ItemFetchJob *fetchJob, QString pro
                     m_tasks[parent]->m_widgetItem->addChild(task);
                     m_tasks[parent]->m_widgetItem->setExpanded(true);
                     findChildrenOf(incidence->uid(), fetchJob, project);
+                    findEventsRelated(incidence->uid(), fetchJob);
                 }
             }
+    }
+}
 
+void Storage::findEventsRelated(QString task, ItemFetchJob *fetchJob)
+{
+    const Item::List items = fetchJob->items();
+    for (const Item &item : items)
+    {
+        if (item.mimeType() == QString("application/x-vnd.akonadi.calendar.event"))
+            if (item.hasPayload<QSharedPointer<KCalCore::Incidence>>())
+            {
+                QSharedPointer<KCalCore::Incidence> incidence = item.payload<QSharedPointer<KCalCore::Incidence>>();
+                QSharedPointer<KCalCore::Event> event = incidence.dynamicCast<KCalCore::Event>();
+                if (incidence->relatedTo() == task)
+                {
+                    QString name = incidence->summary();
+                    Event *newEvent = new Event();
+                    newEvent->m_name = name;
+                    newEvent->m_uid = incidence->uid();
+                    newEvent->m_startTime = event->dtStart();
+                    newEvent->m_endTime = event->dtEnd();
+                    m_tasks[task]->m_events.insert(incidence->uid(), newEvent);
+                }
+            }
     }
 }

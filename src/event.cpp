@@ -4,39 +4,30 @@
 
 Event::Event()
 {
-    m_startTime = QDateTime::currentDateTime();
-    setUid();
+    m_startTime = KDateTime(QDateTime::currentDateTime());
 }
 
-Event::Event(QDateTime& start)
+Event::Event(KDateTime& start)
 {
     m_startTime = start;
-    setUid();
 }
 
 Event::~Event()
 {
 }
 
-void Event::end(QDateTime& end)
+void Event::end(KDateTime& end)
 {
     m_endTime = end;
 }
 
 void Event::end()
 {
-    QDateTime now = QDateTime::currentDateTime();
+    KDateTime now = KDateTime(QDateTime::currentDateTime());
     end(now);
 }
 
 QString& Event::getUid()
 {
     return m_uid;
-}
-
-void Event::setUid()
-{
-    static unsigned int uid = 100;
-    m_uid = QVariant(uid).toString();
-    ++uid;
 }

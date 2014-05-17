@@ -32,6 +32,7 @@ class Storage : public QObject
 
     private:
         void findChildrenOf(QString parent, Akonadi::ItemFetchJob *fetchJob, QString project);
+        void findEventsRelated(QString task, ItemFetchJob *fetchJob);
 
     signals:
         void tasksChanged();

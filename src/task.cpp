@@ -5,7 +5,7 @@ Task::Task(QObject *parent) :
 {
     m_name = "Task";
     m_widgetItem = new QTreeWidgetItem();
-    m_currentDuration.setHMS(0, 0, 0);
+    m_currentDuration.reset();
     m_parent = nullptr;
     m_lastEvent = nullptr;
     m_running = false;
@@ -49,7 +49,7 @@ void Task::addRunningTime(int msecs, bool addToParent)
         msecs = m_runningTime.elapsed();
         m_runningTime.restart();
     }
-    m_currentDuration = m_currentDuration.addMSecs(msecs);
+    m_currentDuration.add(msecs);
     if (m_parent != nullptr && addToParent)
         m_parent->addRunningTime(msecs);
 }
@@ -61,18 +61,17 @@ void Task::addChild(Task* child)
 
 void Task::computeDuration()
 {
-    m_currentDuration.setHMS(0, 0, 0, 0);
+    m_currentDuration.reset();
     for (auto& child : m_children)
     {
         child->computeDuration();
     }
     for (auto& event : m_events)
     {
-        m_currentDuration = m_currentDuration.addSecs(event->m_startTime.secsTo(event->m_endTime));
+        m_currentDuration.add(event->m_startTime.secsTo(event->m_endTime) * 1000);
     }
     if (m_parent != nullptr)
     {
-        qint64 msecs = ((m_currentDuration.hour() * 60 + m_currentDuration.minute()) * 60 + m_currentDuration.second()) * 1000;
-        m_parent->addRunningTime(msecs, false);
+        m_parent->addRunningTime(m_currentDuration.msecs(), false);
     }
 }
