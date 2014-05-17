@@ -16,7 +16,6 @@
             <Action name="start-task" />
             <Action name="stop-task" />
             <Action name="remove-task" />
-            <Action name="delete-task-events" />
             <Action name="task-properties" />
         </Menu >
     </MenuBar>
@@ -28,7 +27,6 @@
         <Action name="start-task" />
         <Action name="stop-task" />
         <Action name="remove-task" />
-        <Action name="delete-task-events" />
         <Action name="task-properties" />
     </ToolBar>
 

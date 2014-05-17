@@ -33,6 +33,8 @@ class MainWindow : public KXmlGuiWindow
 
     signals:
         void currentTaskIsRealTask(bool);
+        void aCalendarIsSelected(bool);
+        void aTaskIsSelected(bool);
 
     public slots:
         void changeCurrentProject(const QString& cur);
@@ -45,6 +47,7 @@ class MainWindow : public KXmlGuiWindow
         void removeCurrentTask();
         void renameLastEvent(QString& name);
         void showTaskProperties();
+        void setCurrentCalendar(const Collection& calendar);
 };
 
 #endif // MAINWINDOW_H
