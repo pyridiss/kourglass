@@ -26,7 +26,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QListWidget" name="listCalendars"/>
+        <widget class="QTreeView" name="listCalendars"/>
        </item>
       </layout>
      </item>

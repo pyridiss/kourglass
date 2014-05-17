@@ -7,11 +7,6 @@
 #include <KStandardAction>
 #include <QTimer>
 
-#include <akonadi/collection.h>
-#include <akonadi/collectionfetchjob.h>
-
-using namespace Akonadi;
-
 MainWindow::MainWindow(QWidget *parent) : KXmlGuiWindow(parent)
 {
     m_mainView = new MainView(this);
@@ -38,9 +33,6 @@ MainWindow::MainWindow(QWidget *parent) : KXmlGuiWindow(parent)
     durationUpdater->start(1000);
 
     setupActions();
-
-    CollectionFetchJob *job = new CollectionFetchJob(Collection::root(), CollectionFetchJob::Recursive);
-    connect(job, SIGNAL(result(KJob*)), m_mainView, SLOT(updateCalendarsList(KJob*)));
 }
 
 MainWindow::~MainWindow()

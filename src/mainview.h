@@ -33,7 +33,6 @@ signals:
 public slots:
     void changeProject(const QString& selectedProject);
     void changeSelectedTask();
-    void updateCalendarsList(KJob *job);
 };
 
 #endif // MAINVIEW_H

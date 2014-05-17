@@ -4,7 +4,8 @@
 #include <QList>
 #include <KJob>
 
-#include <akonadi/collectionfetchjob.h>
+#include <akonadi/collectionmodel.h>
+#include <akonadi/collectionfilterproxymodel.h>
 
 using namespace Akonadi;
 
@@ -15,6 +16,12 @@ MainView::MainView(QWidget *parent) :
     ui->setupUi(this);
     connect(ui->selectProject, SIGNAL(activated(const QString&)), this, SLOT(changeProject(const QString&)));
     connect(ui->treeWidget, SIGNAL(itemSelectionChanged()), this, SLOT(changeSelectedTask()));
+
+    CollectionModel *model = new CollectionModel(this);
+    CollectionFilterProxyModel *proxy = new CollectionFilterProxyModel();
+    proxy->addMimeTypeFilter("application/x-vnd.akonadi.calendar.todo");
+    proxy->setSourceModel(model);
+    ui->listCalendars->setModel(proxy);
 }
 
 MainView::~MainView()
@@ -43,20 +50,4 @@ void MainView::changeProject(const QString& selectedProject)
 void MainView::changeSelectedTask()
 {
     emit taskChanged(ui->treeWidget->selectedItems().first());
-}
-
-void MainView::updateCalendarsList(KJob *job)
-{
-    if (job->error()) return;
-
-    CollectionFetchJob *fetchJob = qobject_cast<CollectionFetchJob*>(job);
-
-    const Collection::List collections = fetchJob->collections();
-    for (auto& collection : collections)
-    {
-        if (collection.contentMimeTypes().contains("application/x-vnd.akonadi.calendar.todo"))
-        {
-            ui->listCalendars->addItem(collection.name());
-        }
-    }
 }
