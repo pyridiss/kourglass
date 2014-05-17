@@ -58,6 +58,8 @@ void Storage::removeTask(QString task)
         Task* toRemove = m_tasks[task];
         if (toRemove->m_parent != nullptr)
         {
+            while (!toRemove->m_children.isEmpty())
+                removeTask(toRemove->m_children.at(0)->m_uid);
             toRemove->m_parent->m_widgetItem->removeChild(toRemove->m_widgetItem);
             toRemove->m_parent->m_children.removeOne(toRemove);
             delete toRemove;
