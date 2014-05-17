@@ -9,7 +9,7 @@
 
 MainWindow::MainWindow(QWidget *parent) : KXmlGuiWindow(parent)
 {
-    m_storage = new Storage();
+    m_storage = new Storage(this);
     connect(m_storage, SIGNAL(projectLoaded(QString&, QTreeWidgetItem*)), this, SLOT(addProjectLoaded(QString&, QTreeWidgetItem*)));
 
     m_mainView = new MainView(this);
@@ -21,13 +21,13 @@ MainWindow::MainWindow(QWidget *parent) : KXmlGuiWindow(parent)
     m_taskPropertiesDialog = new TaskPropertiesDialog(this);
     connect(m_taskPropertiesDialog, SIGNAL(allDurationsChanged()), m_storage, SLOT(computeAllDurations()));
 
-    m_addProjectDialog = new NewProjectDialog();
+    m_addProjectDialog = new NewProjectDialog(this);
     connect(m_addProjectDialog, SIGNAL(projectAccepted(QString&)), this, SLOT(addProject(QString&)));
 
-    m_addTaskDialog = new NewTaskDialog();
+    m_addTaskDialog = new NewTaskDialog(this);
     connect(m_addTaskDialog, SIGNAL(taskAccepted(QString&)), this, SLOT(addTask(QString&)));
 
-    m_addEventDialog = new NewEventDialog();
+    m_addEventDialog = new NewEventDialog(this);
     connect(m_addEventDialog, SIGNAL(eventAccepted(QString&)), this, SLOT(renameLastEvent(QString&)));
 
     QTimer* durationUpdater = new QTimer(this);
@@ -39,8 +39,6 @@ MainWindow::MainWindow(QWidget *parent) : KXmlGuiWindow(parent)
 
 MainWindow::~MainWindow()
 {
-    delete m_storage;
-    m_storage = nullptr;
 }
 
 void MainWindow::setupActions()
@@ -190,6 +188,7 @@ void MainWindow::showTaskProperties()
 void MainWindow::setCurrentCalendar(const Collection& calendar)
 {
     m_storage->loadCalendar(calendar);
+    m_mainView->clearTreeWidget();
     emit aCalendarIsSelected(true);
     emit aTaskIsSelected(false);
     emit currentTaskIsRealTask(false);

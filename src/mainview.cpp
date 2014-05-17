@@ -36,6 +36,12 @@ MainView::MainView(QWidget *parent) :
 MainView::~MainView()
 {
     delete ui;
+    ui = nullptr;
+}
+
+void MainView::clearTreeWidget()
+{
+    ui->treeWidget->clear();
 }
 
 void MainView::addProject(QString& name, QTreeWidgetItem* item)

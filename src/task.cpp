@@ -1,6 +1,7 @@
 #include "task.h"
 
-Task::Task()
+Task::Task(QObject *parent) :
+    QObject(parent)
 {
     m_name = "Task";
     m_widgetItem = new QTreeWidgetItem();
@@ -18,6 +19,8 @@ Task::~Task()
         i = nullptr;
     }
     m_events.clear();
+    delete m_widgetItem;
+    m_widgetItem = nullptr;
 }
 
 void Task::start()

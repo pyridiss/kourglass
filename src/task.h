@@ -9,8 +9,10 @@
 
 #include "event.h"
 
-class Task
+class Task : public QObject
 {
+    Q_OBJECT
+
     public:
         QString m_name;
         QString m_uid;
@@ -28,7 +30,7 @@ class Task
         QTime m_runningTime;
 
     public:
-        Task();
+        explicit Task(QObject *parent = 0);
         ~Task();
         void start();
         void stop();

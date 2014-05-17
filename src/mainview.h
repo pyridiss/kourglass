@@ -38,6 +38,7 @@ public slots:
     void changeProject(const QString& selectedProject);
     void changeSelectedTask();
     void changeCalendar(const Akonadi::Collection& newCollection);
+    void clearTreeWidget();
 };
 
 #endif // MAINVIEW_H

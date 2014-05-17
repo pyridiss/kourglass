@@ -9,7 +9,8 @@
 
 using namespace Akonadi;
 
-Storage::Storage()
+Storage::Storage(QObject *parent) :
+    QObject(parent)
 {
     m_tasks.clear();
 }
@@ -56,22 +57,22 @@ void Storage::removeTask(QString task)
     if (m_tasks.find(task) != m_tasks.end())
     {
         Task* toRemove = m_tasks[task];
+        while (!toRemove->m_children.isEmpty())
+            removeTask(toRemove->m_children.at(0)->m_uid);
         if (toRemove->m_parent != nullptr)
         {
-            while (!toRemove->m_children.isEmpty())
-                removeTask(toRemove->m_children.at(0)->m_uid);
             toRemove->m_parent->m_widgetItem->removeChild(toRemove->m_widgetItem);
             toRemove->m_parent->m_children.removeOne(toRemove);
-            delete toRemove;
-            m_tasks[task] = nullptr;
-            m_tasks.remove(task);
         }
+        delete toRemove;
+        m_tasks[task] = nullptr;
+        m_tasks.remove(task);
     }
 }
 
 QTreeWidgetItem* Storage::addProject(QString& name, QString uid)
 {
-    Task* newProject = new Task();
+    Task* newProject = new Task(this);
     newProject->m_uid = uid;
     m_tasks.insert(uid, newProject);
     newProject->m_widgetItem->setText(0, name);
@@ -82,7 +83,7 @@ QTreeWidgetItem* Storage::addProject(QString& name, QString uid)
 
 QTreeWidgetItem* Storage::addTask(QString& project, Task* parent, QString& name, QString uid)
 {
-    Task* newTask = new Task();
+    Task* newTask = new Task(this);
     newTask->m_uid = uid;
     m_tasks.insert(uid, newTask);
     newTask->m_widgetItem->setText(0, name);
@@ -118,9 +119,12 @@ void Storage::computeAllDurations()
 
 void Storage::loadCalendar(const Collection& newCalendar)
 {
-    m_tasks.clear();
+    while (!m_tasks.empty())
+    {
+        removeTask(m_tasks.begin().key());
+    }
 
-    ItemFetchJob *job = new ItemFetchJob( newCalendar );
+    ItemFetchJob *job = new ItemFetchJob(newCalendar, this);
     connect(job, SIGNAL(result(KJob*)), this, SLOT(newJobFromLoading(KJob*)));
     job->fetchScope().fetchFullPayload();
 }

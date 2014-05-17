@@ -18,7 +18,7 @@ class Storage : public QObject
     Q_OBJECT
 
     public:
-        explicit Storage();
+        explicit Storage(QObject *parent = 0);
         ~Storage();
 
     public:
