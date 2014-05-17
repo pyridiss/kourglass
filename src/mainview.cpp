@@ -4,8 +4,9 @@
 #include <QList>
 #include <KJob>
 
-#include <akonadi/collectionmodel.h>
-#include <akonadi/collectionfilterproxymodel.h>
+#include <akonadi/changerecorder.h>
+#include <akonadi/entitytreemodel.h>
+#include <akonadi/entitymimetypefiltermodel.h>
 
 using namespace Akonadi;
 
@@ -17,11 +18,18 @@ MainView::MainView(QWidget *parent) :
     connect(ui->selectProject, SIGNAL(activated(const QString&)), this, SLOT(changeProject(const QString&)));
     connect(ui->treeWidget, SIGNAL(itemSelectionChanged()), this, SLOT(changeSelectedTask()));
 
-    CollectionModel *model = new CollectionModel(this);
-    CollectionFilterProxyModel *proxy = new CollectionFilterProxyModel();
-    proxy->addMimeTypeFilter("application/x-vnd.akonadi.calendar.todo");
-    proxy->setSourceModel(model);
-    ui->listCalendars->setModel(proxy);
+    ChangeRecorder *changeRecorder = new ChangeRecorder(this);
+    changeRecorder->setCollectionMonitored(Collection::root());
+    changeRecorder->setMimeTypeMonitored("application/x-vnd.akonadi.calendar.todo", true);
+
+    EntityTreeModel *model = new EntityTreeModel(changeRecorder, this);
+    EntityMimeTypeFilterModel* filterModel = new EntityMimeTypeFilterModel(this);
+    filterModel->setSourceModel(model);
+    filterModel->addMimeTypeInclusionFilter(Collection::mimeType());
+    filterModel->setHeaderGroup(EntityTreeModel::CollectionTreeHeaders);
+
+    ui->listCalendars->setModel(filterModel);
+
     connect(ui->listCalendars, SIGNAL(currentChanged(const Akonadi::Collection&)), this, SLOT(changeCalendar(const Akonadi::Collection&)));
 }
 
@@ -55,5 +63,6 @@ void MainView::changeSelectedTask()
 
 void MainView::changeCalendar(const Akonadi::Collection& newCollection)
 {
+    ui->selectProject->clear();
     emit calendarChanged(newCollection);
 }

@@ -33,6 +33,8 @@ kde4_add_executable(timetrak
 target_link_libraries(timetrak
     ${KDE4_KDEUI_LIBS}
     ${KDEPIMLIBS_AKONADI_LIBS}
+    kcalcore
+    akonadi-calendar
     akonadi-kde
 )
 
