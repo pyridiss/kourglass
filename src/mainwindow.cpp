@@ -9,12 +9,14 @@
 
 MainWindow::MainWindow(QWidget *parent) : KXmlGuiWindow(parent)
 {
+    m_storage = new Storage();
+    connect(m_storage, SIGNAL(projectLoaded(QString&)), this, SLOT(addProject(QString&)));
+
     m_mainView = new MainView(this);
     connect(m_mainView, SIGNAL(projectChanged(const QString&)), this, SLOT(changeCurrentProject(const QString&)));
     connect(m_mainView, SIGNAL(taskChanged(QTreeWidgetItem*)), this, SLOT(setCurrentTask(QTreeWidgetItem*)));
+    connect(m_mainView, SIGNAL(calendarChanged(const Collection&)), m_storage, SLOT(loadCalendar(const Collection&)));
     setCentralWidget(m_mainView);
-
-    m_storage = new Storage();
 
     m_taskPropertiesDialog = new TaskPropertiesDialog(this);
     connect(m_taskPropertiesDialog, SIGNAL(allDurationsChanged()), m_storage, SLOT(computeAllDurations()));

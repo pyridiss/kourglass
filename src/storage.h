@@ -6,7 +6,11 @@
 #include <QString>
 #include <QMap>
 
+#include <akonadi/collection.h>
+
 #include "task.h"
+
+using namespace Akonadi;
 
 class Storage : public QObject
 {
@@ -26,12 +30,14 @@ class Storage : public QObject
 
     signals:
         void tasksChanged();
+        void projectLoaded(QString& project);
 
     public slots:
         QTreeWidgetItem* addProject(QString& name);
         QTreeWidgetItem* addTask(QString& project, Task* parent, QString& name);
         void updateDuration();
         void computeAllDurations();
+        void loadCalendar(const Collection& newCalendar);
 };
 
 #endif // STORAGE_H

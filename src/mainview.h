@@ -2,8 +2,11 @@
 #define MAINVIEW_H
 
 #include <QWidget>
+#include <akonadi/collection.h>
 
 #include "task.h"
+
+using namespace Akonadi;
 
 class KJob;
 
@@ -29,10 +32,12 @@ private:
 signals:
     void projectChanged(const QString& selectedProject);
     void taskChanged(QTreeWidgetItem* selectedTask);
+    void calendarChanged(const Collection& newCollection);
 
 public slots:
     void changeProject(const QString& selectedProject);
     void changeSelectedTask();
+    void changeCalendar(const Akonadi::Collection& newCollection);
 };
 
 #endif // MAINVIEW_H

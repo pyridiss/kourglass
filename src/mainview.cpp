@@ -22,6 +22,7 @@ MainView::MainView(QWidget *parent) :
     proxy->addMimeTypeFilter("application/x-vnd.akonadi.calendar.todo");
     proxy->setSourceModel(model);
     ui->listCalendars->setModel(proxy);
+    connect(ui->listCalendars, SIGNAL(currentChanged(const Akonadi::Collection&)), this, SLOT(changeCalendar(const Akonadi::Collection&)));
 }
 
 MainView::~MainView()
@@ -50,4 +51,9 @@ void MainView::changeProject(const QString& selectedProject)
 void MainView::changeSelectedTask()
 {
     emit taskChanged(ui->treeWidget->selectedItems().first());
+}
+
+void MainView::changeCalendar(const Akonadi::Collection& newCollection)
+{
+    emit calendarChanged(newCollection);
 }

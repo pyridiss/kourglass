@@ -1,6 +1,10 @@
 #include <KIcon>
 
+#include <akonadi/collection.h>
+
 #include "storage.h"
+
+using namespace Akonadi;
 
 Storage::Storage()
 {
@@ -98,4 +102,8 @@ void Storage::computeAllDurations()
         if (i->m_parent == nullptr)
             i->computeDuration();
     }
+}
+
+void Storage::loadCalendar(const Collection& newCalendar)
+{
 }
