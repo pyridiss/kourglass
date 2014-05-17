@@ -1,22 +1,22 @@
 #ifndef EVENT_H
 #define EVENT_H
 
-#include <KDateTime>
+#include <QDateTime>
 
 class Event
 {
     public:
         Event();
-        Event(KDateTime& start);
+        Event(QDateTime& start);
         ~Event();
         QString& getUid();
-        void end(KDateTime& end);
+        void end(QDateTime& end);
         void end();
 
     public:
         QString m_name;
-        KDateTime m_startTime;
-        KDateTime m_endTime;
+        QDateTime m_startTime;
+        QDateTime m_endTime;
         QString m_uid;
 };
 

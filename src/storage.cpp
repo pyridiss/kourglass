@@ -194,8 +194,10 @@ void Storage::findEventsRelated(QString task, ItemFetchJob *fetchJob)
                     Event *newEvent = new Event();
                     newEvent->m_name = name;
                     newEvent->m_uid = incidence->uid();
-                    newEvent->m_startTime = event->dtStart();
-                    newEvent->m_endTime = event->dtEnd();
+                    QString dtStart = event->dtStart().toString("\%Y-\%m-\%d \%H:\%M:\%S");
+                    newEvent->m_startTime = QDateTime::fromString(dtStart, QString("yyyy-MM-dd HH:mm:ss"));
+                    QString dtEnd = event->dtEnd().toString("\%Y-\%m-\%d \%H:\%M:\%S");
+                    newEvent->m_endTime = QDateTime::fromString(dtEnd, QString("yyyy-MM-dd HH:mm:ss"));
                     m_tasks[task]->m_events.insert(incidence->uid(), newEvent);
                 }
             }

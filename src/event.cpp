@@ -4,10 +4,10 @@
 
 Event::Event()
 {
-    m_startTime = KDateTime(QDateTime::currentDateTime());
+    m_startTime = QDateTime::currentDateTime();
 }
 
-Event::Event(KDateTime& start)
+Event::Event(QDateTime& start)
 {
     m_startTime = start;
 }
@@ -16,14 +16,14 @@ Event::~Event()
 {
 }
 
-void Event::end(KDateTime& end)
+void Event::end(QDateTime& end)
 {
     m_endTime = end;
 }
 
 void Event::end()
 {
-    KDateTime now = KDateTime(QDateTime::currentDateTime());
+    QDateTime now = QDateTime(QDateTime::currentDateTime());
     end(now);
 }
 

@@ -5,7 +5,7 @@
 #include <KIcon>
 #include <QItemDelegate>
 #include <QDateTimeEdit>
-#include <KDateTime>
+#include <QDateTime>
 
 class TaskPropertiesDateTimeEditDelegate : public QItemDelegate
 {
@@ -120,9 +120,9 @@ void TaskPropertiesDialog::updateTask()
             item = ui->tableEvents->item(i, 1);
             event->m_name = item->text();
             item = ui->tableEvents->item(i, 2);
-            event->m_startTime = KDateTime::fromString(item->text());
+            event->m_startTime = QDateTime::fromString(item->text());
             item = ui->tableEvents->item(i, 3);
-            event->m_endTime = KDateTime::fromString(item->text());
+            event->m_endTime = QDateTime::fromString(item->text());
         }
     }
     emit allDurationsChanged();
