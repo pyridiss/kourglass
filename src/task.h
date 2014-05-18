@@ -7,7 +7,13 @@
 #include <QList>
 #include <QMap>
 
+#include <KJob>
+
+#include <akonadi/collection.h>
+
 #include "event.h"
+
+using namespace Akonadi;
 
 class Duration
 {
@@ -68,13 +74,16 @@ class Task : public QObject
         QTime m_runningTime;
 
     public:
-        explicit Task(QObject *parent = 0);
+        explicit Task(QString& name, QString& uid, Task* parentTask, const Collection& collection, QObject *parent = 0);
         ~Task();
         void start();
         void stop();
         void addRunningTime(int msecs = 0, bool addToParent = true);
         void addChild(Task* child);
         void computeDuration();
+
+    public slots:
+        void creationFinished(KJob *job);
 };
 
 #endif //TASK_H

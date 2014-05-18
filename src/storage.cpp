@@ -26,12 +26,6 @@ Storage::~Storage()
     m_tasks.clear();
 }
 
-QString Storage::getNewUid()
-{
-    static unsigned int uid = 0;
-    return QVariant(++uid).toString();
-}
-
 void Storage::startTask(QString& task)
 {
     if (m_tasks.find(task) != m_tasks.end())
@@ -73,8 +67,7 @@ void Storage::removeTask(QString task)
 
 QTreeWidgetItem* Storage::addProject(QString& name, QString uid)
 {
-    Task* newProject = new Task(this);
-    newProject->m_uid = uid;
+    Task* newProject = new Task(name, uid, nullptr, m_currentCollection, this);
     m_tasks.insert(uid, newProject);
     newProject->m_widgetItem->setText(0, name);
     newProject->m_widgetItem->setText(1, "00:00:00");
@@ -84,14 +77,11 @@ QTreeWidgetItem* Storage::addProject(QString& name, QString uid)
 
 QTreeWidgetItem* Storage::addTask(QString& project, Task* parent, QString& name, QString uid)
 {
-    Task* newTask = new Task(this);
-    newTask->m_uid = uid;
+    Task* newTask = new Task(name, uid, parent, m_currentCollection, this);
     m_tasks.insert(uid, newTask);
     newTask->m_widgetItem->setText(0, name);
     newTask->m_widgetItem->setText(1, "00:00:00");
-    newTask->m_name = name;
     newTask->m_project = project;
-    newTask->m_parent = parent;
     parent->addChild(newTask);
     return newTask->m_widgetItem;
 }
@@ -128,6 +118,7 @@ void Storage::loadCalendar(const Collection& newCalendar)
     ItemFetchJob *job = new ItemFetchJob(newCalendar, this);
     connect(job, SIGNAL(result(KJob*)), this, SLOT(newJobFromLoading(KJob*)));
     job->fetchScope().fetchFullPayload();
+    m_currentCollection = newCalendar;
 }
 
 void Storage::newJobFromLoading(KJob *job)

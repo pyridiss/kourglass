@@ -23,12 +23,12 @@ class Storage : public QObject
 
     public:
         QMap<QString, Task*> m_tasks;
+        Collection m_currentCollection;
 
     public:
         void startTask(QString& task);
         void stopTask(QString& task);
         void removeTask(QString task);
-        static QString getNewUid();
 
     private:
         void findChildrenOf(QString parent, Akonadi::ItemFetchJob *fetchJob, QString project);
@@ -39,8 +39,8 @@ class Storage : public QObject
         void projectLoaded(QString& name, QTreeWidgetItem* project);
 
     public slots:
-        QTreeWidgetItem* addProject(QString& name, QString uid = getNewUid());
-        QTreeWidgetItem* addTask(QString& project, Task* parent, QString& name, QString uid = getNewUid());
+        QTreeWidgetItem* addProject(QString& name, QString uid = QString());
+        QTreeWidgetItem* addTask(QString& project, Task* parent, QString& name, QString uid = QString());
         void updateDuration();
         void computeAllDurations();
         void loadCalendar(const Collection& newCalendar);

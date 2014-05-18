@@ -1,14 +1,44 @@
+#include <KJob>
+
+#include <kcalcore/todo.h>
+
+#include <akonadi/item.h>
+#include <akonadi/itemcreatejob.h>
+
 #include "task.h"
 
-Task::Task(QObject *parent) :
+using namespace Akonadi;
+
+Task::Task(QString& name, QString& uid, Task* parentTask, const Collection& collection, QObject *parent) :
     QObject(parent)
 {
-    m_name = "Task";
+    m_name = name;
     m_widgetItem = new QTreeWidgetItem();
     m_currentDuration.reset();
-    m_parent = nullptr;
+    m_parent = parentTask;
     m_lastEvent = nullptr;
     m_running = false;
+
+    if (uid == QString())
+    {
+        KCalCore::Todo *taskPointer = new KCalCore::Todo();
+        QSharedPointer<KCalCore::Todo> task(taskPointer);
+        task->setSummary(name);
+        if (parentTask != nullptr) task->setRelatedTo(parentTask->m_uid);
+
+        m_uid = task->uid();
+
+        Item item;
+        item.setMimeType("application/x-vnd.akonadi.calendar.todo");
+        item.setPayload<QSharedPointer<KCalCore::Todo>>(task);
+
+        ItemCreateJob *job = new ItemCreateJob(item, collection, this);
+        connect(job, SIGNAL(result(KJob*)), this, SLOT(creationFinished(KJob*)));
+    }
+    else
+    {
+        m_uid = uid;
+    }
 }
 
 Task::~Task()
@@ -19,6 +49,14 @@ Task::~Task()
         i = nullptr;
     }
     m_events.clear();
+}
+
+void Task::creationFinished(KJob *job)
+{
+    if (job->error())
+        qDebug() << "Error occurred";
+    else
+        qDebug() << "Task created successfully";
 }
 
 void Task::start()
