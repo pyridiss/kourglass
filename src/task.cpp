@@ -80,7 +80,7 @@ void Task::stop()
 
 void Task::addRunningTime(int msecs, bool addToParent)
 {
-    if (msecs == 0)
+    if (msecs == -1)
     {
         msecs = m_runningTime.elapsed();
         m_runningTime.restart();

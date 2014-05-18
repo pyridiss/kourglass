@@ -17,7 +17,7 @@ using namespace Akonadi;
 
 class Duration
 {
-    unsigned long long m_msecs;
+    unsigned long long m_msecs = 0;
 
 public:
     QString toString()
@@ -78,7 +78,7 @@ class Task : public QObject
         ~Task();
         void start();
         void stop();
-        void addRunningTime(int msecs = 0, bool addToParent = true);
+        void addRunningTime(int msecs = -1, bool addToParent = true);
         void addChild(Task* child);
         void computeDuration();
 
