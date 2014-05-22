@@ -174,6 +174,7 @@ void MainWindow::removeCurrentTask()
 void MainWindow::renameLastEvent(QString& name)
 {
     m_storage->m_tasks[m_currentTask]->m_lastEvent->m_name = name;
+    m_storage->m_tasks[m_currentTask]->m_lastEvent->saveToAkonadi();
 }
 
 void MainWindow::showTaskProperties()

@@ -182,9 +182,9 @@ void Storage::findEventsRelated(QString task, ItemFetchJob *fetchJob)
                 if (incidence->relatedTo() == task)
                 {
                     QString name = incidence->summary();
-                    Event *newEvent = new Event();
-                    newEvent->m_name = name;
-                    newEvent->m_uid = incidence->uid();
+                    QString uid = incidence->uid();
+                    int akonadiId = item.id();
+                    Event *newEvent = new Event(name, uid, akonadiId, task, m_currentCollection, this);
                     QString dtStart = event->dtStart().toString("\%Y-\%m-\%d \%H:\%M:\%S");
                     newEvent->m_startTime = QDateTime::fromString(dtStart, QString("yyyy-MM-dd HH:mm:ss"));
                     QString dtEnd = event->dtEnd().toString("\%Y-\%m-\%d \%H:\%M:\%S");

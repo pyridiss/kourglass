@@ -68,6 +68,7 @@ class Task : public QObject
         bool m_running;
         QMap<QString, Event*> m_events;
         Event* m_lastEvent;
+        Collection m_collection;
 
     private:
         QString m_currentEvent;

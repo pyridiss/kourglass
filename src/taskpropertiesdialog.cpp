@@ -123,6 +123,7 @@ void TaskPropertiesDialog::updateTask()
             event->m_startTime = QDateTime::fromString(item->text());
             item = ui->tableEvents->item(i, 3);
             event->m_endTime = QDateTime::fromString(item->text());
+            event->saveToAkonadi();
         }
     }
     emit allDurationsChanged();

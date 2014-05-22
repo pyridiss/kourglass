@@ -18,6 +18,7 @@ Task::Task(QString& name, QString& uid, Task* parentTask, const Collection& coll
     m_parent = parentTask;
     m_lastEvent = nullptr;
     m_running = false;
+    m_collection = collection;
 
     if (uid == QString())
     {
@@ -63,7 +64,9 @@ void Task::start()
 {
     m_runningTime.start();
     m_running = true;
-    Event* newEvent = new Event();
+    QString name = "Unnamed";
+    QString uid = QString();
+    Event* newEvent = new Event(name, uid, 0, m_uid, m_collection, this);
     m_lastEvent = newEvent;
     m_events.insert(newEvent->getUid(), newEvent);
     m_currentEvent = newEvent->getUid();
