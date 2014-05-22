@@ -80,7 +80,7 @@ QString& Event::getUid()
 
 void Event::saveToAkonadi()
 {
-    ItemFetchJob *fetchJob = new ItemFetchJob(Item(m_akonadiId));
+    ItemFetchJob *fetchJob = new ItemFetchJob(Item(m_akonadiId), this);
     connect(fetchJob, SIGNAL(result(KJob*)), SLOT(saveToAkonadiItemFetched(KJob*)));
     fetchJob->fetchScope().fetchFullPayload();
 }
@@ -107,7 +107,7 @@ void Event::saveToAkonadiItemFetched(KJob* job)
             KDateTime end = KDateTime(m_endTime);
             event->setDtEnd(end);
 
-            ItemModifyJob *modifyJob = new ItemModifyJob(item);
+            ItemModifyJob *modifyJob = new ItemModifyJob(item, this);
             connect(modifyJob, SIGNAL(result(KJob*)), SLOT(saveToAkonadiItemSaved(KJob*)));
         }
 }
@@ -119,7 +119,7 @@ void Event::saveToAkonadiItemSaved(KJob *job)
 
 void Event::removeFromAkonadi()
 {
-    ItemFetchJob *fetchJob = new ItemFetchJob(Item(m_akonadiId));
+    ItemFetchJob *fetchJob = new ItemFetchJob(Item(m_akonadiId), this);
     connect(fetchJob, SIGNAL(result(KJob*)), SLOT(removeFromAkonadiItemFetched(KJob*)));
 }
 
@@ -131,7 +131,7 @@ void Event::removeFromAkonadiItemFetched(KJob *job)
 
     const Item item = fetchJob->items().first();
 
-    ItemDeleteJob *deleteJob = new ItemDeleteJob(item);
+    ItemDeleteJob *deleteJob = new ItemDeleteJob(item, this);
     connect(deleteJob, SIGNAL(result(KJob*)), this, SLOT(removeFromAkonadiItemRemoved(KJob*)));
 }
 
