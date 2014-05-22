@@ -21,6 +21,7 @@ class Event : public QObject
         void end(QDateTime& end);
         void end();
         void saveToAkonadi();
+        void removeFromAkonadi();
 
     public:
         QString m_name;
@@ -33,6 +34,8 @@ class Event : public QObject
         void creationFinished(KJob* job);
         void saveToAkonadiItemFetched(KJob* job);
         void saveToAkonadiItemSaved(KJob *job);
+        void removeFromAkonadiItemFetched(KJob *job);
+        void removeFromAkonadiItemRemoved(KJob *job);
 };
 
 #endif //EVENT_H

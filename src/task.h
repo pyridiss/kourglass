@@ -82,6 +82,7 @@ class Task : public QObject
         void addRunningTime(int msecs = -1, bool addToParent = true);
         void addChild(Task* child);
         void computeDuration();
+        void removeEvent(QString& uidToRemove);
 
     public slots:
         void creationFinished(KJob *job);

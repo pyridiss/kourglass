@@ -8,6 +8,7 @@
 #include <akonadi/item.h>
 #include <akonadi/itemcreatejob.h>
 #include <akonadi/itemmodifyjob.h>
+#include <akonadi/itemdeletejob.h>
 #include <akonadi/itemfetchjob.h>
 #include <akonadi/itemfetchscope.h>
 
@@ -114,4 +115,28 @@ void Event::saveToAkonadiItemFetched(KJob* job)
 void Event::saveToAkonadiItemSaved(KJob *job)
 {
     if (job->error()) return;
+}
+
+void Event::removeFromAkonadi()
+{
+    ItemFetchJob *fetchJob = new ItemFetchJob(Item(m_akonadiId));
+    connect(fetchJob, SIGNAL(result(KJob*)), SLOT(removeFromAkonadiItemFetched(KJob*)));
+}
+
+void Event::removeFromAkonadiItemFetched(KJob *job)
+{
+    if (job->error()) return;
+
+    ItemFetchJob *fetchJob = qobject_cast<ItemFetchJob*>(job);
+
+    const Item item = fetchJob->items().first();
+
+    ItemDeleteJob *deleteJob = new ItemDeleteJob(item);
+    connect(deleteJob, SIGNAL(result(KJob*)), this, SLOT(removeFromAkonadiItemRemoved(KJob*)));
+}
+
+void Event::removeFromAkonadiItemRemoved(KJob *job)
+{
+    if (job->error()) return;
+    delete this;
 }

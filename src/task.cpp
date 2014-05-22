@@ -114,3 +114,13 @@ void Task::computeDuration()
         m_parent->addRunningTime(m_currentDuration.msecs(), false);
     }
 }
+
+void Task::removeEvent(QString& uidToRemove)
+{
+    if (m_events.find(uidToRemove) != m_events.end())
+    {
+        m_events[uidToRemove]->removeFromAkonadi();
+        m_events[uidToRemove] = nullptr;
+        m_events.remove(uidToRemove);
+    }
+}
