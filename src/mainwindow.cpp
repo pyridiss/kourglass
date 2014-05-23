@@ -103,7 +103,7 @@ void MainWindow::setupActions()
 
     KStandardAction::quit(kapp, SLOT(quit()), actionCollection());
 
-    setupGUI(Default, "timetrakui.rc");
+    setupGUI(Default, "kourglassui.rc");
 }
 
 void MainWindow::changeCurrentProject(const QString& cur)

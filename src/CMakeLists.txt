@@ -1,11 +1,11 @@
-project(timetrak)
+project(kourglass)
 
 include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
     ${AKONADI_INCLUDE_DIR}
 )
 
-set(timetrak_SRCS
+set(kourglass_SRCS
     taskpropertiesdialog.cpp
     neweventdialog.cpp
     newprojectdialog.cpp
@@ -18,7 +18,7 @@ set(timetrak_SRCS
     main.cpp
 )
 
-kde4_add_ui_files(timetrak_SRCS
+kde4_add_ui_files(kourglass_SRCS
     taskpropertiesdialog.ui
     neweventdialog.ui
     newprojectdialog.ui
@@ -26,11 +26,11 @@ kde4_add_ui_files(timetrak_SRCS
     mainview.ui
 )
 
-kde4_add_executable(timetrak
-    ${timetrak_SRCS}
+kde4_add_executable(kourglass
+    ${kourglass_SRCS}
 )
 
-target_link_libraries(timetrak
+target_link_libraries(kourglass
     ${KDE4_KDEUI_LIBS}
     ${KDEPIMLIBS_AKONADI_LIBS}
     kcalcore
@@ -38,8 +38,8 @@ target_link_libraries(timetrak
     akonadi-kde
 )
 
-set_target_properties(timetrak PROPERTIES COMPILE_FLAGS "-std=c++11 -g -Wall")
+set_target_properties(kourglass PROPERTIES COMPILE_FLAGS "-std=c++11 -g -Wall")
 
-install(TARGETS timetrak DESTINATION ${BIN_INSTALL_DIR})
+install(TARGETS kourglass DESTINATION ${BIN_INSTALL_DIR})
 
-install(FILES timetrakui.rc DESTINATION ${DATA_INSTALL_DIR}/timetrak)
+install(FILES kourglassui.rc DESTINATION ${DATA_INSTALL_DIR}/kourglass)

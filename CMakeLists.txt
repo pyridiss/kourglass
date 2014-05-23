@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
 
-project (timetrak)
+project (kourglass)
 
 find_package(KDE4 REQUIRED)
 

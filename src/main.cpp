@@ -7,9 +7,9 @@
 
 int main (int argc, char *argv[])
 {
-    KAboutData aboutData( "timetrak",
+    KAboutData aboutData( "kourglass",
                           0,
-                          ki18n("TimeTrak"),
+                          ki18n("kourglass"),
                           "0.0.1",
                           ki18n("Tracks your time"),
                           KAboutData::License_GPL,
