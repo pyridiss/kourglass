@@ -4,12 +4,14 @@
 
 #include <akonadi/item.h>
 #include <akonadi/itemcreatejob.h>
+#include <akonadi/itemdeletejob.h>
+#include <akonadi/itemfetchjob.h>
 
 #include "task.h"
 
 using namespace Akonadi;
 
-Task::Task(QString& name, QString& uid, Task* parentTask, const Collection& collection, QObject *parent) :
+Task::Task(QString& name, QString& uid, qint64 akonadiId, Task* parentTask, const Collection& collection, QObject *parent) :
     QObject(parent)
 {
     m_name = name;
@@ -39,6 +41,7 @@ Task::Task(QString& name, QString& uid, Task* parentTask, const Collection& coll
     else
     {
         m_uid = uid;
+        m_akonadiId = akonadiId;
     }
 }
 
@@ -54,10 +57,11 @@ Task::~Task()
 
 void Task::creationFinished(KJob *job)
 {
-    if (job->error())
-        qDebug() << "Error occurred";
-    else
-        qDebug() << "Task created successfully";
+    if (job->error()) return;
+
+    ItemCreateJob *createJob = qobject_cast<ItemCreateJob*>(job);
+
+    m_akonadiId = createJob->item().id();
 }
 
 void Task::start()
@@ -117,10 +121,47 @@ void Task::computeDuration()
 
 void Task::removeEvent(QString& uidToRemove)
 {
+    qDebug() << "task::removeEvent" << uidToRemove;
     if (m_events.find(uidToRemove) != m_events.end())
     {
         m_events[uidToRemove]->removeFromAkonadi();
         m_events[uidToRemove] = nullptr;
         m_events.remove(uidToRemove);
     }
+}
+
+void Task::removeFromAkonadi()
+{
+    ItemFetchJob *fetchJob = new ItemFetchJob(Item(m_akonadiId), this);
+    connect(fetchJob, SIGNAL(result(KJob*)), SLOT(removeFromAkonadiItemFetched(KJob*)));
+}
+
+void Task::removeFromAkonadiItemFetched(KJob *job)
+{
+    if (job->error()) return;
+
+    ItemFetchJob *fetchJob = qobject_cast<ItemFetchJob*>(job);
+
+    const Item item = fetchJob->items().first();
+
+    ItemDeleteJob *deleteJob = new ItemDeleteJob(item);
+    connect(deleteJob, SIGNAL(result(KJob*)), this, SLOT(removeFromAkonadiItemRemoved(KJob*)));
+}
+
+void Task::removeFromAkonadiItemRemoved(KJob *job)
+{
+    if (job->error()) return;
+    delete this;
+}
+
+void Task::clearDatabase()
+{
+    for (auto& i : m_events)
+    {
+        i->removeFromAkonadi();
+        i = nullptr;
+    }
+    m_events.clear();
+
+    emit cleanDone(m_uid);
 }

@@ -33,18 +33,23 @@ class Storage : public QObject
     private:
         void findChildrenOf(QString parent, Akonadi::ItemFetchJob *fetchJob, QString project);
         void findEventsRelated(QString task, ItemFetchJob *fetchJob);
+        void removeTaskAndEvents(QString task);
+        void removeTaskWithoutEvents(QString task);
+        void clearDatabase(QString task);
 
     signals:
         void tasksChanged();
         void projectLoaded(QString& name, QTreeWidgetItem* project);
+        void beginEventsClean();
 
     public slots:
-        QTreeWidgetItem* addProject(QString& name, QString uid = QString());
-        QTreeWidgetItem* addTask(QString& project, Task* parent, QString& name, QString uid = QString());
+        QTreeWidgetItem* addProject(QString& name, qint64 akonadiId = 0, QString uid = QString());
+        QTreeWidgetItem* addTask(QString& project, Task* parent, QString& name, qint64 akonadiId = 0, QString uid = QString());
         void updateDuration();
         void computeAllDurations();
         void loadCalendar(const Collection& newCalendar);
         void newJobFromLoading(KJob *job);
+        void removeTaskEnd(QString task);
 };
 
 #endif // STORAGE_H

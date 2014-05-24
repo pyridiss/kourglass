@@ -60,6 +60,7 @@ class Task : public QObject
     public:
         QString m_name;
         QString m_uid;
+        qint64 m_akonadiId;
         Task* m_parent;
         QList<Task*> m_children;
         QString m_project;
@@ -75,7 +76,7 @@ class Task : public QObject
         QTime m_runningTime;
 
     public:
-        explicit Task(QString& name, QString& uid, Task* parentTask, const Collection& collection, QObject *parent = 0);
+        explicit Task(QString& name, QString& uid, qint64 akonadiId, Task* parentTask, const Collection& collection, QObject *parent = 0);
         ~Task();
         void start();
         void stop();
@@ -83,9 +84,16 @@ class Task : public QObject
         void addChild(Task* child);
         void computeDuration();
         void removeEvent(QString& uidToRemove);
+        void removeFromAkonadi();
+
+    signals:
+        void cleanDone(QString);
 
     public slots:
         void creationFinished(KJob *job);
+        void removeFromAkonadiItemRemoved(KJob *job);
+        void removeFromAkonadiItemFetched(KJob *job);
+        void clearDatabase();
 };
 
 #endif //TASK_H
