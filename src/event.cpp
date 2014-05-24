@@ -12,7 +12,7 @@
 #include <akonadi/itemfetchjob.h>
 #include <akonadi/itemfetchscope.h>
 
-Event::Event(QString& name, QString& uid, int akonadiId, QString& parentTask, const Collection& collection, QObject *parent) :
+Event::Event(QString& name, QString& uid, qint64 akonadiId, QString& parentTask, const Collection& collection, QObject *parent) :
     QObject(parent)
 {
     m_startTime = QDateTime::currentDateTime();
@@ -131,7 +131,7 @@ void Event::removeFromAkonadiItemFetched(KJob *job)
 
     const Item item = fetchJob->items().first();
 
-    ItemDeleteJob *deleteJob = new ItemDeleteJob(item, this);
+    ItemDeleteJob *deleteJob = new ItemDeleteJob(item);
     connect(deleteJob, SIGNAL(result(KJob*)), this, SLOT(removeFromAkonadiItemRemoved(KJob*)));
 }
 

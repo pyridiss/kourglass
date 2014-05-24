@@ -14,7 +14,7 @@ class Event : public QObject
     Q_OBJECT
 
     public:
-        Event(QString& name, QString& uid, int akonadiId, QString& parentTask, const Collection& collection, QObject *parent);
+        Event(QString& name, QString& uid, qint64 akonadiId, QString& parentTask, const Collection& collection, QObject *parent);
         ~Event();
         QString& getUid();
         void start(QDateTime& start);
