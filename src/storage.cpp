@@ -1,6 +1,7 @@
 #include <KIcon>
 #include <KMessageBox>
 #include <KLocale>
+#include <KDateTime>
 
 #include <akonadi/collection.h>
 #include <akonadi/itemfetchjob.h>
@@ -16,6 +17,7 @@ Storage::Storage(QObject *parent) :
     QObject(parent)
 {
     m_tasks.clear();
+    m_memoryCalendar = new KCalCore::MemoryCalendar(KDateTime::LocalZone);
 }
 
 Storage::~Storage()
@@ -26,6 +28,8 @@ Storage::~Storage()
         i = nullptr;
     }
     m_tasks.clear();
+    m_memoryCalendar->close();
+    delete m_memoryCalendar;
 }
 
 void Storage::startTask(QString& task)
@@ -206,9 +210,9 @@ void Storage::newJobFromLoading(KJob *job)
     for (const Item &item : items)
     {
         if (item.mimeType() == QString("application/x-vnd.akonadi.calendar.todo"))
-            if (item.hasPayload<QSharedPointer<KCalCore::Incidence>>())
+            if (item.hasPayload<KCalCore::Incidence::Ptr>())
             {
-                QSharedPointer<KCalCore::Incidence> incidence = item.payload<QSharedPointer<KCalCore::Incidence>>();
+                KCalCore::Incidence::Ptr incidence = item.payload<KCalCore::Incidence::Ptr>();
                 if (incidence->relatedTo() == QString(""))
                 {
                     QString name = incidence->summary();
@@ -218,6 +222,7 @@ void Storage::newJobFromLoading(KJob *job)
                     findChildrenOf(incidence->uid(), fetchJob, incidence->uid());
                     findEventsRelated(incidence->uid(), fetchJob);
                 }
+                m_memoryCalendar->addIncidence(incidence);
             }
     }
     computeAllDurations();
@@ -229,9 +234,9 @@ void Storage::findChildrenOf(QString parent, ItemFetchJob *fetchJob, QString pro
     for (const Item &item : items)
     {
         if (item.mimeType() == QString("application/x-vnd.akonadi.calendar.todo"))
-            if (item.hasPayload<QSharedPointer<KCalCore::Incidence>>())
+            if (item.hasPayload<KCalCore::Incidence::Ptr>())
             {
-                QSharedPointer<KCalCore::Incidence> incidence = item.payload<QSharedPointer<KCalCore::Incidence>>();
+                KCalCore::Incidence::Ptr incidence = item.payload<KCalCore::Incidence::Ptr>();
                 if (incidence->relatedTo() == parent)
                 {
                     QString name = incidence->summary();
@@ -242,6 +247,7 @@ void Storage::findChildrenOf(QString parent, ItemFetchJob *fetchJob, QString pro
                     findChildrenOf(incidence->uid(), fetchJob, project);
                     findEventsRelated(incidence->uid(), fetchJob);
                 }
+                m_memoryCalendar->addIncidence(incidence);
             }
     }
 }
@@ -252,10 +258,10 @@ void Storage::findEventsRelated(QString task, ItemFetchJob *fetchJob)
     for (const Item &item : items)
     {
         if (item.mimeType() == QString("application/x-vnd.akonadi.calendar.event"))
-            if (item.hasPayload<QSharedPointer<KCalCore::Incidence>>())
+            if (item.hasPayload<KCalCore::Incidence::Ptr>())
             {
-                QSharedPointer<KCalCore::Incidence> incidence = item.payload<QSharedPointer<KCalCore::Incidence>>();
-                QSharedPointer<KCalCore::Event> event = incidence.dynamicCast<KCalCore::Event>();
+                KCalCore::Incidence::Ptr incidence = item.payload<KCalCore::Incidence::Ptr>();
+                KCalCore::Event::Ptr event = incidence.dynamicCast<KCalCore::Event>();
                 if (incidence->relatedTo() == task)
                 {
                     QString name = incidence->summary();
@@ -268,6 +274,7 @@ void Storage::findEventsRelated(QString task, ItemFetchJob *fetchJob)
                     newEvent->m_endTime = QDateTime::fromString(dtEnd, QString("yyyy-MM-dd HH:mm:ss"));
                     m_tasks[task]->m_events.insert(incidence->uid(), newEvent);
                 }
+                m_memoryCalendar->addEvent(event);
             }
     }
 }

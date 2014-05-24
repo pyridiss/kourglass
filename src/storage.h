@@ -6,6 +6,8 @@
 #include <QString>
 #include <QMap>
 
+#include <kcalcore/memorycalendar.h>
+
 #include <akonadi/collection.h>
 #include <akonadi/itemfetchjob.h>
 
@@ -24,6 +26,7 @@ class Storage : public QObject
     public:
         QMap<QString, Task*> m_tasks;
         Collection m_currentCollection;
+        KCalCore::MemoryCalendar* m_memoryCalendar;
 
     public:
         void startTask(QString& task);
