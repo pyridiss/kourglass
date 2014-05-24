@@ -29,6 +29,7 @@ class Event : public QObject
         QDateTime m_endTime;
         QString m_uid;
         qint64 m_akonadiId;
+        QString m_parentTask;
 
     public slots:
         void creationFinished(KJob* job);

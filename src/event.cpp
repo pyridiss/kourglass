@@ -17,6 +17,7 @@ Event::Event(QString& name, QString& uid, qint64 akonadiId, QString& parentTask,
 {
     m_startTime = QDateTime::currentDateTime();
     m_name = name;
+    m_parentTask = parentTask;
 
     if (uid == QString())
     {
@@ -100,6 +101,7 @@ void Event::saveToAkonadiItemFetched(KJob* job)
             QSharedPointer<KCalCore::Event> event = incidence.dynamicCast<KCalCore::Event>();
 
             event->setSummary(m_name);
+            event->setRelatedTo(m_parentTask);
 
             KDateTime start = KDateTime(m_startTime);
             event->setDtStart(start);

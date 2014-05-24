@@ -121,7 +121,6 @@ void Task::computeDuration()
 
 void Task::removeEvent(QString& uidToRemove)
 {
-    qDebug() << "task::removeEvent" << uidToRemove;
     if (m_events.find(uidToRemove) != m_events.end())
     {
         m_events[uidToRemove]->removeFromAkonadi();
@@ -151,7 +150,7 @@ void Task::removeFromAkonadiItemFetched(KJob *job)
 void Task::removeFromAkonadiItemRemoved(KJob *job)
 {
     if (job->error()) return;
-    delete this;
+//     delete this;
 }
 
 void Task::clearDatabase()

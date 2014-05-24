@@ -99,6 +99,26 @@ void Storage::removeTaskEnd(QString task)
 
 void Storage::removeTaskWithoutEvents(QString task)
 {
+    if (m_tasks.find(task) != m_tasks.end())
+    {
+        Task* toRemove = m_tasks[task];
+        while (!toRemove->m_children.isEmpty())
+            removeTaskWithoutEvents(toRemove->m_children.at(0)->m_uid);
+
+        if (toRemove->m_parent != nullptr)
+        {
+            for (auto& i : toRemove->m_events)
+            {
+                i->m_parentTask = toRemove->m_parent->m_uid;
+                toRemove->m_parent->m_events.insert(i->m_uid, i);
+                i->saveToAkonadi();
+            }
+            toRemove->m_events.clear();
+            toRemove->m_parent->m_widgetItem->removeChild(toRemove->m_widgetItem);
+            toRemove->m_parent->m_children.removeOne(toRemove);
+        }
+        removeTaskEnd(task);
+    }
 }
 
 QTreeWidgetItem* Storage::addProject(QString& name, qint64 akonadiId, QString uid)
@@ -114,7 +134,7 @@ QTreeWidgetItem* Storage::addProject(QString& name, qint64 akonadiId, QString ui
 QTreeWidgetItem* Storage::addTask(QString& project, Task* parent, QString& name, qint64 akonadiId, QString uid)
 {
     Task* newTask = new Task(name, uid, akonadiId, parent, m_currentCollection, this);
-    m_tasks.insert(uid, newTask);
+    m_tasks.insert(newTask->m_uid, newTask);
     newTask->m_widgetItem->setText(0, name);
     newTask->m_widgetItem->setText(1, "00:00:00");
     newTask->m_project = project;
