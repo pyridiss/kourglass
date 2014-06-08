@@ -35,6 +35,8 @@ class MainWindow : public KXmlGuiWindow
         void currentTaskIsRealTask(bool);
         void aCalendarIsSelected(bool);
         void aTaskIsSelected(bool);
+        void aRunningTaskIsSelected(bool);
+        void aNonRunningTaskIsSelected(bool);
 
     public slots:
         void changeCurrentProject(const QString& cur);

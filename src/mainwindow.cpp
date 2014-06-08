@@ -97,8 +97,8 @@ void MainWindow::setupActions()
     connect(this, SIGNAL(currentTaskIsRealTask(bool)), removeTaskAction, SLOT(setEnabled(bool)));
     connect(this, SIGNAL(aCalendarIsSelected(bool)), newProjectAction, SLOT(setEnabled(bool)));
     connect(this, SIGNAL(aTaskIsSelected(bool)), newTaskAction, SLOT(setEnabled(bool)));
-    connect(this, SIGNAL(aTaskIsSelected(bool)), startTaskAction, SLOT(setEnabled(bool)));
-    connect(this, SIGNAL(aTaskIsSelected(bool)), stopTaskAction, SLOT(setEnabled(bool)));
+    connect(this, SIGNAL(aNonRunningTaskIsSelected(bool)), startTaskAction, SLOT(setEnabled(bool)));
+    connect(this, SIGNAL(aRunningTaskIsSelected(bool)), stopTaskAction, SLOT(setEnabled(bool)));
     connect(this, SIGNAL(aTaskIsSelected(bool)), taskPropertiesAction, SLOT(setEnabled(bool)));
 
     KStandardAction::quit(kapp, SLOT(quit()), actionCollection());
@@ -118,6 +118,8 @@ void MainWindow::changeCurrentProject(const QString& cur)
         if (m_storage->m_tasks.find(old) != m_storage->m_tasks.end())
             m_mainView->changeTreeView(m_storage->m_tasks[old], m_storage->m_tasks[m_currentProject]);
     emit aTaskIsSelected(false);
+    emit aRunningTaskIsSelected(false);
+    emit aNonRunningTaskIsSelected(false);
 }
 
 void MainWindow::addProject(QString& name)
@@ -150,6 +152,16 @@ void MainWindow::setCurrentTask(QTreeWidgetItem* cur)
         if (i->m_widgetItem == cur)
         {
             emit aTaskIsSelected(true);
+            if (i->m_running)
+            {
+                emit aRunningTaskIsSelected(true);
+                emit aNonRunningTaskIsSelected(false);
+            }
+            else
+            {
+                emit aRunningTaskIsSelected(false);
+                emit aNonRunningTaskIsSelected(true);
+            }
             m_currentTask = i->m_uid;
             emit currentTaskIsRealTask((i->m_parent != nullptr));
         }
@@ -159,11 +171,15 @@ void MainWindow::setCurrentTask(QTreeWidgetItem* cur)
 void MainWindow::startCurrentTask()
 {
     m_storage->startTask(m_currentTask);
+    emit aRunningTaskIsSelected(true);
+    emit aNonRunningTaskIsSelected(false);
 }
 
 void MainWindow::stopCurrentTask()
 {
     m_storage->stopTask(m_currentTask);
+    emit aRunningTaskIsSelected(false);
+    emit aNonRunningTaskIsSelected(true);
 }
 
 void MainWindow::removeCurrentTask()
@@ -192,5 +208,7 @@ void MainWindow::setCurrentCalendar(const Collection& calendar)
     m_mainView->clearTreeWidget();
     emit aCalendarIsSelected(true);
     emit aTaskIsSelected(false);
+    emit aRunningTaskIsSelected(false);
+    emit aNonRunningTaskIsSelected(false);
     emit currentTaskIsRealTask(false);
 }
