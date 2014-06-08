@@ -57,12 +57,6 @@ void MainView::resizeColumn()
     ui->treeWidget->resizeColumnToContents(0);
 }
 
-void MainView::changeTreeView(Task* oldRoot, Task* newRoot)
-{
-    ui->treeWidget->setItemHidden(oldRoot->m_widgetItem, true);
-    ui->treeWidget->setItemHidden(newRoot->m_widgetItem, false);
-}
-
 void MainView::changeProject(const QString& selectedProject)
 {
     emit projectChanged(selectedProject);
@@ -76,5 +70,6 @@ void MainView::changeSelectedTask()
 void MainView::changeCalendar(const Akonadi::Collection& newCollection)
 {
     ui->selectProject->clear();
+    ui->selectProject->addItem(i18n("Show all projects"));
     emit calendarChanged(newCollection);
 }

@@ -24,7 +24,6 @@ public:
 
 public:
     void addProject(QString& name, QTreeWidgetItem* item);
-    void changeTreeView(Task*oldRoot, Task* newRoot);
 
 private:
     Ui::MainView *ui;

@@ -108,15 +108,15 @@ void MainWindow::setupActions()
 
 void MainWindow::changeCurrentProject(const QString& cur)
 {
-    QString old = m_currentProject;
     for (auto& i : m_storage->m_tasks)
     {
-        if (i->m_name == cur)
-            m_currentProject = i->m_uid;
+        if (i->m_parent == nullptr) //Only projects are concerned
+        {
+            if (i->m_name == cur || cur == i18n("Show all projects")) i->m_widgetItem->setHidden(false);
+            else i->m_widgetItem->setHidden(true);
+        }
     }
-    if (m_storage->m_tasks.find(m_currentProject) != m_storage->m_tasks.end())
-        if (m_storage->m_tasks.find(old) != m_storage->m_tasks.end())
-            m_mainView->changeTreeView(m_storage->m_tasks[old], m_storage->m_tasks[m_currentProject]);
+
     emit aTaskIsSelected(false);
     emit aRunningTaskIsSelected(false);
     emit aNonRunningTaskIsSelected(false);
@@ -139,7 +139,7 @@ void MainWindow::addTask(QString& name)
 {
     if (m_storage->m_tasks.find(m_currentTask) != m_storage->m_tasks.end())
     {
-        QTreeWidgetItem* task = m_storage->addTask(m_currentProject, m_storage->m_tasks[m_currentTask], name);
+        QTreeWidgetItem* task = m_storage->addTask(m_storage->m_tasks[m_currentTask], name);
         m_storage->m_tasks[m_currentTask]->m_widgetItem->addChild(task);
         m_storage->m_tasks[m_currentTask]->m_widgetItem->setExpanded(true);
     }

@@ -63,7 +63,6 @@ class Task : public QObject
         qint64 m_akonadiId;
         Task* m_parent;
         QList<Task*> m_children;
-        QString m_project;
         QTreeWidgetItem* m_widgetItem;
         Duration m_currentDuration;
         bool m_running;

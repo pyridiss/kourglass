@@ -26,7 +26,6 @@ class MainWindow : public KXmlGuiWindow
         TaskPropertiesDialog* m_taskPropertiesDialog;
         MainView* m_mainView;
 
-        QString m_currentProject;
         QString m_currentTask;
         Storage* m_storage;
         void setupActions();

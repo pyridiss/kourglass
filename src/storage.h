@@ -47,7 +47,7 @@ class Storage : public QObject
 
     public slots:
         QTreeWidgetItem* addProject(QString& name, qint64 akonadiId = 0, QString uid = QString());
-        QTreeWidgetItem* addTask(QString& project, Task* parent, QString& name, qint64 akonadiId = 0, QString uid = QString());
+        QTreeWidgetItem* addTask(Task* parent, QString& name, qint64 akonadiId = 0, QString uid = QString());
         void updateDuration();
         void computeAllDurations();
         void loadCalendar(const Collection& newCalendar);

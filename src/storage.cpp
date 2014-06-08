@@ -135,13 +135,12 @@ QTreeWidgetItem* Storage::addProject(QString& name, qint64 akonadiId, QString ui
     return newProject->m_widgetItem;
 }
 
-QTreeWidgetItem* Storage::addTask(QString& project, Task* parent, QString& name, qint64 akonadiId, QString uid)
+QTreeWidgetItem* Storage::addTask(Task* parent, QString& name, qint64 akonadiId, QString uid)
 {
     Task* newTask = new Task(name, uid, akonadiId, parent, m_currentCollection, this);
     m_tasks.insert(newTask->m_uid, newTask);
     newTask->m_widgetItem->setText(0, name);
     newTask->m_widgetItem->setText(1, "00:00:00");
-    newTask->m_project = project;
     parent->addChild(newTask);
     return newTask->m_widgetItem;
 }
@@ -241,7 +240,7 @@ void Storage::findChildrenOf(QString parent, ItemFetchJob *fetchJob, QString pro
                 {
                     QString name = incidence->summary();
                     qint64 akonadiId = item.id();
-                    QTreeWidgetItem* task = addTask(project, m_tasks[parent], name, akonadiId, incidence->uid());
+                    QTreeWidgetItem* task = addTask(m_tasks[parent], name, akonadiId, incidence->uid());
                     m_tasks[parent]->m_widgetItem->addChild(task);
                     m_tasks[parent]->m_widgetItem->setExpanded(true);
                     findChildrenOf(incidence->uid(), fetchJob, project);
