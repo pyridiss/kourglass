@@ -48,9 +48,14 @@ TaskPropertiesDialog::TaskPropertiesDialog(QWidget *parent) :
     ui->setupUi(this);
     ui->addEventButton->setIcon(KIcon("list-add"));
     ui->deleteEventButton->setIcon(KIcon("list-remove"));
+    ui->deleteEventButton->setEnabled(false);
     connect(ui->addEventButton, SIGNAL(released()), this, SLOT(addEvent()));
     connect(ui->deleteEventButton, SIGNAL(released()), this, SLOT(deleteEvent()));
     connect(this, SIGNAL(accepted()), this, SLOT(updateTask()));
+    connect(this, SIGNAL(accepted()), this, SLOT(noEventSelected()));
+    connect(this, SIGNAL(rejected()), this, SLOT(noEventSelected()));
+    connect(ui->tableEvents, SIGNAL(itemActivated(QTableWidgetItem*)), this, SLOT(anEventSelected()));
+    connect(this, SIGNAL(activateDeleteButton(bool)), ui->deleteEventButton, SLOT(setEnabled(bool)));
 
     m_currentTask = nullptr;
 
@@ -64,6 +69,16 @@ TaskPropertiesDialog::TaskPropertiesDialog(QWidget *parent) :
 TaskPropertiesDialog::~TaskPropertiesDialog()
 {
     delete ui;
+}
+
+void TaskPropertiesDialog::anEventSelected()
+{
+    emit activateDeleteButton(true);
+}
+
+void TaskPropertiesDialog::noEventSelected()
+{
+    emit activateDeleteButton(false);
 }
 
 void TaskPropertiesDialog::setTask(Task* task)

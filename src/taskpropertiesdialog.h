@@ -27,11 +27,14 @@ private:
 
 signals:
     void allDurationsChanged();
+    void activateDeleteButton(bool);
 
 public slots:
     void updateTask();
     void addEvent();
     void deleteEvent();
+    void anEventSelected();
+    void noEventSelected();
 };
 
 #endif // TASKPROPERTIESDIALOG_H
