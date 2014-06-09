@@ -11,6 +11,8 @@
 #include "taskpropertiesdialog.h"
 #include "neweventdialog.h"
 
+class KStatusNotifierItem;
+
 class MainWindow : public KXmlGuiWindow
 {
     Q_OBJECT
@@ -25,6 +27,7 @@ class MainWindow : public KXmlGuiWindow
         NewEventDialog* m_addEventDialog;
         TaskPropertiesDialog* m_taskPropertiesDialog;
         MainView* m_mainView;
+        KStatusNotifierItem* systemTray;
 
         QString m_currentTask;
         Storage* m_storage;

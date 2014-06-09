@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 
 #include <KApplication>
+#include <KStatusNotifierItem>
 #include <KStatusBar>
 #include <KAction>
 #include <KLocale>
@@ -10,6 +11,14 @@
 
 MainWindow::MainWindow(QWidget *parent) : KXmlGuiWindow(parent)
 {
+    setAttribute(Qt::WA_DeleteOnClose, false);
+
+    systemTray = new KStatusNotifierItem("kourglass", this);
+    systemTray->setStatus(KStatusNotifierItem::Active);
+    systemTray->setIconByName("clock");
+    systemTray->setTitle("Kourglass");
+    systemTray->setToolTip("clock", "Kourglass", i18n("Track your time!"));
+
     statusBar()->insertPermanentItem(i18n("Total calendar time:"), 1);
     statusBar()->insertPermanentItem("00:00:00", 2);
     statusBar()->insertPermanentItem("Today:", 3);
