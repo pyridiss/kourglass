@@ -36,6 +36,7 @@ public slots:
     void anEventSelected();
     void noEventSelected();
     void resizeTableEventsColumns();
+    void updateProgressValue(int value);
 };
 
 #endif // TASKPROPERTIESDIALOG_H

@@ -78,6 +78,8 @@ TaskPropertiesDialog::TaskPropertiesDialog(QWidget *parent) :
     connect(ui->tableEvents, SIGNAL(itemActivated(QTableWidgetItem*)), this, SLOT(anEventSelected()));
     connect(this, SIGNAL(activateDeleteButton(bool)), ui->deleteEventButton, SLOT(setEnabled(bool)));
 
+    connect(ui->progressSlider, SIGNAL(valueChanged(int)), this, SLOT(updateProgressValue(int)));
+
     m_currentTask = nullptr;
 
     TaskPropertiesDateTimeEditDelegate *widgetDelegate = new TaskPropertiesDateTimeEditDelegate(ui->tableEvents);
@@ -199,4 +201,9 @@ void TaskPropertiesDialog::deleteEvent()
     m_currentTask->removeEvent(uidToRemove);
 
     updateTableEvents();
+}
+
+void TaskPropertiesDialog::updateProgressValue(int value)
+{
+    ui->progressValue->setText(QVariant(value).toString() + "%");
 }
