@@ -41,6 +41,27 @@ class TaskPropertiesDateTimeEditDelegate : public QItemDelegate
         }
 };
 
+class DateItem : public QTableWidgetItem
+{
+    //This class will help sorting events by real date instead of QString
+    public:
+        QDateTime m_time;
+
+        DateItem() : QTableWidgetItem()
+        {
+        }
+
+        virtual bool operator<(const QTableWidgetItem &other) const
+        {
+            const DateItem *right = dynamic_cast<const DateItem*>(&other);
+            if (right != nullptr)
+            {
+                return (m_time < right->m_time);
+            }
+            return (QTableWidgetItem::operator<(other));
+        }
+};
+
 TaskPropertiesDialog::TaskPropertiesDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::TaskPropertiesDialog)
@@ -64,6 +85,7 @@ TaskPropertiesDialog::TaskPropertiesDialog(QWidget *parent) :
     ui->tableEvents->setItemDelegateForColumn(3, widgetDelegate);
 
     ui->tableEvents->setColumnHidden(0, true);
+    ui->tableEvents->setSortingEnabled(true);
     connect(ui->tableEvents, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(resizeTableEventsColumns()));
 }
 
@@ -94,6 +116,7 @@ void TaskPropertiesDialog::setTask(Task* task)
 void TaskPropertiesDialog::updateTableEvents()
 {
     int row = 0;
+    ui->tableEvents->setSortingEnabled(false);
     ui->tableEvents->clearContents();
     while (ui->tableEvents->rowCount() > 0)
         ui->tableEvents->removeRow(0);
@@ -110,17 +133,25 @@ void TaskPropertiesDialog::updateTableEvents()
         name->setText(i->m_name);
         ui->tableEvents->setItem(row, 1, name);
 
-        QTableWidgetItem *start = new QTableWidgetItem();
+        // Columns 2 and 3 are DateItem's instead of QTableWidgetItem's to be correctly sorted
+
+        DateItem *start = new DateItem();
         start->setText(i->m_startTime.toString());
+        start->m_time = i->m_startTime;
         ui->tableEvents->setItem(row, 2, start);
 
-        QTableWidgetItem *end = new QTableWidgetItem();
+        DateItem *end = new DateItem();
         end->setText(i->m_endTime.toString());
+        end->m_time = i->m_endTime;
         ui->tableEvents->setItem(row, 3, end);
 
         ++row;
     }
     resizeTableEventsColumns();
+
+    //Default is: new events first (by starting time)
+    ui->tableEvents->sortItems(2, Qt::DescendingOrder);
+    ui->tableEvents->setSortingEnabled(true);
 }
 
 void TaskPropertiesDialog::resizeTableEventsColumns()
