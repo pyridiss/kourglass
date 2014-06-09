@@ -110,8 +110,6 @@ void TaskPropertiesDialog::setTask(Task* task)
 {
     m_currentTask = task;
     ui->taskNameEdit->setText(task->m_name);
-    ui->radioButtonToday->click();
-    ui->radioButtonOneTask->click();
     updateTableEvents();
 }
 
@@ -158,7 +156,6 @@ void TaskPropertiesDialog::updateTableEvents()
 
 void TaskPropertiesDialog::resizeTableEventsColumns()
 {
-    ui->tableEvents->resizeColumnToContents(1);
     ui->tableEvents->resizeColumnToContents(2);
     ui->tableEvents->resizeColumnToContents(3);
 }

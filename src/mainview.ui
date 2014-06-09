@@ -48,8 +48,11 @@
        </item>
        <item>
         <widget class="QTreeWidget" name="treeWidget">
+         <property name="alternatingRowColors">
+          <bool>true</bool>
+         </property>
          <property name="columnCount">
-          <number>2</number>
+          <number>4</number>
          </property>
          <attribute name="headerStretchLastSection">
           <bool>true</bool>
@@ -61,7 +64,17 @@
          </column>
          <column>
           <property name="text">
-           <string>Duration</string>
+           <string>Total duration</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Today</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>This week</string>
           </property>
          </column>
         </widget>

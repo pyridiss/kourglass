@@ -6,214 +6,185 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>660</width>
-    <height>474</height>
+    <width>662</width>
+    <height>487</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Task properties</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
+  <layout class="QVBoxLayout" name="verticalLayout" stretch="1,5,1">
    <item>
-    <widget class="QTabWidget" name="tabWidget">
-     <property name="currentIndex">
-      <number>0</number>
+    <widget class="QGroupBox" name="groupBox_3">
+     <property name="title">
+      <string>Task properties</string>
      </property>
-     <widget class="QWidget" name="tabProperties">
-      <attribute name="title">
-       <string>Task properties</string>
-      </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_3">
-       <item>
-        <layout class="QVBoxLayout" name="verticalLayout_2">
-         <item>
-          <widget class="QLabel" name="label">
-           <property name="text">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Task name&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLineEdit" name="taskNameEdit"/>
-         </item>
-         <item>
-          <widget class="QLabel" name="label_2">
-           <property name="text">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Progress&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_2">
-           <item>
-            <widget class="QSlider" name="progressSlider">
-             <property name="maximum">
-              <number>100</number>
-             </property>
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="tickPosition">
-              <enum>QSlider::TicksBelow</enum>
-             </property>
-             <property name="tickInterval">
-              <number>10</number>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLabel" name="progressValue">
-             <property name="text">
-              <string>0%</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <spacer name="verticalSpacer">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="tabTaskProperties">
-      <attribute name="title">
-       <string>Events list</string>
-      </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_5">
-       <item>
-        <layout class="QVBoxLayout" name="verticalLayout_4">
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout">
-           <item>
-            <widget class="QGroupBox" name="groupBox">
-             <property name="title">
-              <string>Show:</string>
-             </property>
-             <layout class="QVBoxLayout" name="verticalLayout_7">
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <layout class="QGridLayout" name="gridLayout" columnstretch="2,10,1">
+        <item row="0" column="1">
+         <widget class="QLineEdit" name="taskNameEdit"/>
+        </item>
+        <item row="1" column="2">
+         <widget class="QLabel" name="progressValue">
+          <property name="text">
+           <string>0%</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Task name&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Progress&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QSlider" name="progressSlider">
+          <property name="maximum">
+           <number>100</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="tickPosition">
+           <enum>QSlider::TicksBelow</enum>
+          </property>
+          <property name="tickInterval">
+           <number>10</number>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_4">
+     <property name="title">
+      <string>Events list</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_4">
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="1,3,4">
+            <item>
+             <widget class="QLabel" name="label_3">
+              <property name="text">
+               <string>Show:</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="comboBox">
               <item>
-               <layout class="QVBoxLayout" name="verticalLayout_6">
-                <item>
-                 <widget class="QRadioButton" name="radioButtonToday">
-                  <property name="text">
-                   <string>Today</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QRadioButton" name="radioButtonWeek">
-                  <property name="text">
-                   <string>This week</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QRadioButton" name="radioButtonAll">
-                  <property name="text">
-                   <string>All</string>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
+               <property name="text">
+                <string>All events</string>
+               </property>
               </item>
-             </layout>
-            </widget>
-           </item>
-           <item>
-            <widget class="QGroupBox" name="groupBox_2">
-             <property name="title">
-              <string>Children tasks</string>
-             </property>
-             <layout class="QVBoxLayout" name="verticalLayout_9">
               <item>
-               <layout class="QVBoxLayout" name="verticalLayout_8">
-                <item>
-                 <widget class="QRadioButton" name="radioButtonOneTask">
-                  <property name="text">
-                   <string>Show only this task</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QRadioButton" name="radioButtonChildren">
-                  <property name="text">
-                   <string>Show this task and its children</string>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
+               <property name="text">
+                <string>Only events that occured today</string>
+               </property>
               </item>
-             </layout>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <widget class="QTableWidget" name="tableEvents">
-           <property name="verticalScrollMode">
-            <enum>QAbstractItemView::ScrollPerPixel</enum>
-           </property>
-           <property name="horizontalScrollMode">
-            <enum>QAbstractItemView::ScrollPerPixel</enum>
-           </property>
-           <attribute name="horizontalHeaderStretchLastSection">
-            <bool>true</bool>
-           </attribute>
-           <column>
-            <property name="text">
-             <string>UID</string>
+              <item>
+               <property name="text">
+                <string>Only events that occurend this week</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="checkBox">
+              <property name="text">
+               <string>Show events belonging to children of this task</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="QTableWidget" name="tableEvents">
+            <property name="alternatingRowColors">
+             <bool>true</bool>
             </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Event name</string>
+            <property name="verticalScrollMode">
+             <enum>QAbstractItemView::ScrollPerPixel</enum>
             </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Start time</string>
+            <property name="horizontalScrollMode">
+             <enum>QAbstractItemView::ScrollPerPixel</enum>
             </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>End time</string>
-            </property>
-           </column>
-          </widget>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_5">
-           <item>
-            <widget class="QPushButton" name="addEventButton">
+            <attribute name="horizontalHeaderDefaultSectionSize">
+             <number>290</number>
+            </attribute>
+            <attribute name="horizontalHeaderStretchLastSection">
+             <bool>true</bool>
+            </attribute>
+            <attribute name="verticalHeaderVisible">
+             <bool>false</bool>
+            </attribute>
+            <column>
              <property name="text">
-              <string>Add a new event</string>
+              <string>UID</string>
              </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="deleteEventButton">
+            </column>
+            <column>
              <property name="text">
-              <string>Remove this event</string>
+              <string>Event name</string>
              </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-        </layout>
-       </item>
-      </layout>
-     </widget>
+            </column>
+            <column>
+             <property name="text">
+              <string>Start time</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>End time</string>
+             </property>
+            </column>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_5">
+        <item>
+         <widget class="QPushButton" name="addEventButton">
+          <property name="text">
+           <string>Add a new event</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="deleteEventButton">
+          <property name="text">
+           <string>Remove this event</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
     </widget>
    </item>
    <item>
