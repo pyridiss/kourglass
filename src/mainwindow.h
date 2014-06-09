@@ -49,6 +49,7 @@ class MainWindow : public KXmlGuiWindow
         void renameLastEvent(QString& name);
         void showTaskProperties();
         void setCurrentCalendar(const Collection& calendar);
+        void updateStatusBar();
 };
 
 #endif // MAINWINDOW_H

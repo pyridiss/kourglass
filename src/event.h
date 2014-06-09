@@ -18,8 +18,7 @@ class Event : public QObject
         ~Event();
         QString& getUid();
         void start(QDateTime& start);
-        void end(QDateTime& end);
-        void end();
+        void setEndTime();
         void saveToAkonadi();
         void removeFromAkonadi();
 

@@ -41,7 +41,11 @@ public:
     {
         m_msecs = 0;
     }
-    
+
+    void operator+=(Duration& right)
+    {
+        m_msecs += right.m_msecs;
+    }
     void add(unsigned long long delta)
     {
         m_msecs += delta;

@@ -16,6 +16,7 @@ Event::Event(QString& name, QString& uid, qint64 akonadiId, QString& parentTask,
     QObject(parent)
 {
     m_startTime = QDateTime::currentDateTime();
+    setEndTime();
     m_name = name;
     m_parentTask = parentTask;
 
@@ -63,15 +64,9 @@ void Event::start(QDateTime& start)
     m_startTime = start;
 }
 
-void Event::end(QDateTime& end)
+void Event::setEndTime()
 {
-    m_endTime = end;
-}
-
-void Event::end()
-{
-    QDateTime now = QDateTime(QDateTime::currentDateTime());
-    end(now);
+    m_endTime = QDateTime::currentDateTime();
 }
 
 QString& Event::getUid()

@@ -82,7 +82,7 @@ void Task::stop()
     addRunningTime();
     m_widgetItem->setText(1, m_currentDuration.toString());
     if (m_events.find(m_currentEvent) != m_events.end())
-        m_events[m_currentEvent]->end();
+        m_events[m_currentEvent]->setEndTime();
 }
 
 void Task::addRunningTime(int msecs, bool addToParent)
@@ -91,6 +91,8 @@ void Task::addRunningTime(int msecs, bool addToParent)
     {
         msecs = m_runningTime.elapsed();
         m_runningTime.restart();
+        if (m_events.find(m_currentEvent) != m_events.end())
+            m_events[m_currentEvent]->setEndTime();
     }
     m_currentDuration.add(msecs);
     if (m_parent != nullptr && addToParent)

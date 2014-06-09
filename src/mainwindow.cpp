@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 
 #include <KApplication>
+#include <KStatusBar>
 #include <KAction>
 #include <KLocale>
 #include <KActionCollection>
@@ -9,6 +10,13 @@
 
 MainWindow::MainWindow(QWidget *parent) : KXmlGuiWindow(parent)
 {
+    statusBar()->insertPermanentItem(i18n("Total calendar time:"), 1);
+    statusBar()->insertPermanentItem("00:00:00", 2);
+    statusBar()->insertPermanentItem("Today:", 3);
+    statusBar()->insertPermanentItem("00:00:00", 4);
+    statusBar()->insertPermanentItem("This week:", 5);
+    statusBar()->insertPermanentItem("00:00:00", 6);
+
     m_storage = new Storage(this);
     connect(m_storage, SIGNAL(projectLoaded(QString&, QTreeWidgetItem*)), this, SLOT(addProjectLoaded(QString&, QTreeWidgetItem*)));
 
@@ -32,6 +40,7 @@ MainWindow::MainWindow(QWidget *parent) : KXmlGuiWindow(parent)
 
     QTimer* durationUpdater = new QTimer(this);
     connect(durationUpdater, SIGNAL(timeout()), m_storage, SLOT(updateDuration()));
+    connect(durationUpdater, SIGNAL(timeout()), this, SLOT(updateStatusBar()));
     durationUpdater->start(1000);
 
     setupActions();
@@ -211,4 +220,39 @@ void MainWindow::setCurrentCalendar(const Collection& calendar)
     emit aRunningTaskIsSelected(false);
     emit aNonRunningTaskIsSelected(false);
     emit currentTaskIsRealTask(false);
+}
+
+void MainWindow::updateStatusBar()
+{
+    Duration total, today, thisWeek;
+
+    QDateTime now = QDateTime::currentDateTime();
+    QDate todayDate = now.date();
+    int todayWeekNumber = now.date().weekNumber();
+
+    for (auto& i : m_storage->m_tasks)
+    {
+        //Projects (without parents) have already total duration calculated
+        if (i->m_parent == nullptr)
+            total += i->m_currentDuration;
+
+        //To calculate 'today' and 'thisWeek', we need to check all events
+        for (auto& j : i->m_events)
+        {
+            if (j->m_endTime.date() == todayDate)
+            {
+                //There is a working time today
+                today.add(j->m_startTime.secsTo(j->m_endTime) * 1000);
+            }
+            if (j->m_endTime.date().weekNumber() == todayWeekNumber)
+            {
+                //There is a working time this week
+                thisWeek.add(j->m_startTime.secsTo(j->m_endTime) * 1000);
+            }
+        }
+    }
+
+    statusBar()->changeItem(total.toString(), 2);
+    statusBar()->changeItem(today.toString(), 4);
+    statusBar()->changeItem(thisWeek.toString(), 6);
 }
