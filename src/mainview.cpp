@@ -32,6 +32,7 @@ MainView::MainView(QWidget *parent) :
 
     connect(ui->listCalendars, SIGNAL(currentChanged(const Akonadi::Collection&)), this, SLOT(changeCalendar(const Akonadi::Collection&)));
     connect(ui->treeWidget, SIGNAL(itemExpanded(QTreeWidgetItem*)), this, SLOT(resizeColumn()));
+    connect(ui->selectProject, SIGNAL(activated(const QString&)), this, SLOT(resizeColumn()));
 }
 
 MainView::~MainView()

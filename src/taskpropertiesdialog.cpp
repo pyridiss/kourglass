@@ -64,6 +64,7 @@ TaskPropertiesDialog::TaskPropertiesDialog(QWidget *parent) :
     ui->tableEvents->setItemDelegateForColumn(3, widgetDelegate);
 
     ui->tableEvents->setColumnHidden(0, true);
+    connect(ui->tableEvents, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(resizeTableEventsColumns()));
 }
 
 TaskPropertiesDialog::~TaskPropertiesDialog()
@@ -119,7 +120,14 @@ void TaskPropertiesDialog::updateTableEvents()
 
         ++row;
     }
-    ui->tableEvents->resizeColumnsToContents();
+    resizeTableEventsColumns();
+}
+
+void TaskPropertiesDialog::resizeTableEventsColumns()
+{
+    ui->tableEvents->resizeColumnToContents(1);
+    ui->tableEvents->resizeColumnToContents(2);
+    ui->tableEvents->resizeColumnToContents(3);
 }
 
 void TaskPropertiesDialog::updateTask()

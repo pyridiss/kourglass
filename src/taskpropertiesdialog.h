@@ -35,6 +35,7 @@ public slots:
     void deleteEvent();
     void anEventSelected();
     void noEventSelected();
+    void resizeTableEventsColumns();
 };
 
 #endif // TASKPROPERTIESDIALOG_H
