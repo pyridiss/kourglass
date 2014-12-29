@@ -33,6 +33,8 @@ MainWindow::MainWindow(QWidget *parent) : KXmlGuiWindow(parent)
     connect(m_mainView, SIGNAL(projectChanged(const QString&)), this, SLOT(changeCurrentProject(const QString&)));
     connect(m_mainView, SIGNAL(taskChanged(QTreeWidgetItem*)), this, SLOT(setCurrentTask(QTreeWidgetItem*)));
     connect(m_mainView, SIGNAL(calendarChanged(const Collection&)), this, SLOT(setCurrentCalendar(const Collection&)));
+    connect(m_mainView, SIGNAL(dateFromChanged(const QDate&)), m_storage, SLOT(setDateFrom(const QDate&)));
+    connect(m_mainView, SIGNAL(dateToChanged(const QDate&)), m_storage, SLOT(setDateTo(const QDate&)));
     setCentralWidget(m_mainView);
 
     m_taskPropertiesDialog = new TaskPropertiesDialog(this);

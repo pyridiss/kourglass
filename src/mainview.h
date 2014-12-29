@@ -32,11 +32,16 @@ signals:
     void projectChanged(const QString& selectedProject);
     void taskChanged(QTreeWidgetItem* selectedTask);
     void calendarChanged(const Collection& newCollection);
+    void dateFromChanged(const QDate& newDate);
+    void dateToChanged(const QDate& newDate);
 
 public slots:
     void changeProject(const QString& selectedProject);
     void changeSelectedTask();
     void changeCalendar(const Akonadi::Collection& newCollection);
+    void changeDateFrom(const QDate& newDate);
+    void changeDateTo(const QDate& newDate);
+    void updateDatesFromTo();
     void clearTreeWidget();
     void resizeColumn();
 };

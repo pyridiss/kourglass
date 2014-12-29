@@ -104,16 +104,18 @@ void Task::addChild(Task* child)
     m_children.push_back(child);
 }
 
-void Task::computeDuration()
+void Task::computeDuration(QDate& from, QDate& to)
 {
     m_currentDuration.reset();
     for (auto& child : m_children)
     {
-        child->computeDuration();
+        child->computeDuration(from, to);
     }
     for (auto& event : m_events)
     {
-        m_currentDuration.add(event->m_startTime.secsTo(event->m_endTime) * 1000);
+        if (event->m_startTime.date() >= from &&
+            event->m_startTime.date() <= to)
+            m_currentDuration.add(event->m_startTime.secsTo(event->m_endTime) * 1000);
     }
     if (m_parent != nullptr)
     {

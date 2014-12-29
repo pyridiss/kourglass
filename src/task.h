@@ -85,7 +85,7 @@ class Task : public QObject
         void stop();
         void addRunningTime(int msecs = -1, bool addToParent = true);
         void addChild(Task* child);
-        void computeDuration();
+        void computeDuration(QDate &from, QDate &to);
         void removeEvent(QString& uidToRemove);
         void removeFromAkonadi();
 

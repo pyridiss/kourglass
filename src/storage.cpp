@@ -163,7 +163,7 @@ void Storage::computeAllDurations()
     for (auto& i : m_tasks)
     {
         if (i->m_parent == nullptr)
-            i->computeDuration();
+            i->computeDuration(m_dateFrom, m_dateTo);
     }
 }
 
@@ -276,4 +276,15 @@ void Storage::findEventsRelated(QString task, ItemFetchJob *fetchJob)
                 m_memoryCalendar->addEvent(event);
             }
     }
+}
+
+void Storage::setDateFrom(const QDate& newDateFrom)
+{
+    m_dateFrom = newDateFrom;
+    computeAllDurations();
+}
+void Storage::setDateTo(const QDate& newDateTo)
+{
+    m_dateTo = newDateTo;
+    computeAllDurations();
 }

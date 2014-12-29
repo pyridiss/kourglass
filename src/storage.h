@@ -5,6 +5,7 @@
 #include <QTreeWidget>
 #include <QString>
 #include <QMap>
+#include <QDate>
 
 #include <kcalcore/memorycalendar.h>
 
@@ -27,6 +28,8 @@ class Storage : public QObject
         QMap<QString, Task*> m_tasks;
         Collection m_currentCollection;
         KCalCore::MemoryCalendar* m_memoryCalendar;
+        QDate m_dateFrom;
+        QDate m_dateTo;
 
     public:
         void startTask(QString& task);
@@ -53,6 +56,8 @@ class Storage : public QObject
         void loadCalendar(const Collection& newCalendar);
         void newJobFromLoading(KJob *job);
         void removeTaskEnd(QString task);
+        void setDateFrom(const QDate &newDateFrom);
+        void setDateTo(const QDate &newDateFrom);
 };
 
 #endif // STORAGE_H

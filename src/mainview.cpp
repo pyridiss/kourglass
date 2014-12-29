@@ -30,9 +30,17 @@ MainView::MainView(QWidget *parent) :
 
     ui->listCalendars->setModel(filterModel);
 
+    ui->radioButtonAllEvents->setChecked(true);
+    QDate today = QDate::currentDate();
+    ui->dateTo->setDate(today);
+
     connect(ui->listCalendars, SIGNAL(currentChanged(const Akonadi::Collection&)), this, SLOT(changeCalendar(const Akonadi::Collection&)));
     connect(ui->treeWidget, SIGNAL(itemExpanded(QTreeWidgetItem*)), this, SLOT(resizeColumn()));
     connect(ui->selectProject, SIGNAL(activated(const QString&)), this, SLOT(resizeColumn()));
+    connect(ui->dateFrom, SIGNAL(dateChanged(const QDate&)), this, SLOT(changeDateFrom(const QDate&)));
+    connect(ui->dateTo, SIGNAL(dateChanged(const QDate&)), this, SLOT(changeDateTo(const QDate&)));
+    connect(ui->radioButtonAllEvents, SIGNAL(clicked()), this, SLOT(updateDatesFromTo()));
+    connect(ui->radioButtonBetweenDates, SIGNAL(clicked()), this, SLOT(updateDatesFromTo()));
 }
 
 MainView::~MainView()
@@ -73,4 +81,28 @@ void MainView::changeCalendar(const Akonadi::Collection& newCollection)
     ui->selectProject->clear();
     ui->selectProject->addItem(i18n("Show all projects"));
     emit calendarChanged(newCollection);
+}
+
+void MainView::changeDateFrom(const QDate &newDate)
+{
+    const QDate aLongTimeAgo;
+    if (ui->radioButtonAllEvents->isChecked())
+        emit dateFromChanged(aLongTimeAgo);
+    else
+        emit dateFromChanged(newDate);
+}
+
+void MainView::changeDateTo(const QDate &newDate)
+{
+    const QDate today = QDate::currentDate();
+    if (ui->radioButtonAllEvents->isChecked())
+        emit dateToChanged(today);
+    else
+        emit dateToChanged(newDate);
+}
+
+void MainView::updateDatesFromTo()
+{
+    changeDateFrom(ui->dateFrom->date());
+    changeDateTo(ui->dateTo->date());
 }
