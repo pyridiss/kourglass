@@ -9,8 +9,8 @@
 
 #include <kcalcore/memorycalendar.h>
 
-#include <akonadi/collection.h>
-#include <akonadi/itemfetchjob.h>
+#include <AkonadiCore/Collection>
+#include <AkonadiCore/ItemFetchJob>
 
 #include "task.h"
 
@@ -58,6 +58,7 @@ class Storage : public QObject
         void removeTaskEnd(QString task);
         void setDateFrom(const QDate &newDateFrom);
         void setDateTo(const QDate &newDateFrom);
+        void hideUnusedTasks(QString& currentProject, bool hide, int intDuration, QString qStringDuration);
 };
 
 #endif // STORAGE_H

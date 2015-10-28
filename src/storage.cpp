@@ -1,11 +1,11 @@
-#include <KIcon>
+#include <QIcon>
 #include <KMessageBox>
 #include <KLocale>
 #include <KDateTime>
 
-#include <akonadi/collection.h>
-#include <akonadi/itemfetchjob.h>
-#include <akonadi/itemfetchscope.h>
+#include <AkonadiCore/Collection>
+#include <AkonadiCore/ItemFetchJob>
+#include <AkonadiCore/ItemFetchScope>
 #include <kcalcore/incidence.h>
 #include <kcalcore/event.h>
 
@@ -36,7 +36,7 @@ void Storage::startTask(QString& task)
 {
     if (m_tasks.find(task) != m_tasks.end())
     {
-        m_tasks[task]->m_widgetItem->setIcon(0, KIcon("arrow-right"));
+        m_tasks[task]->m_widgetItem->setIcon(0, QIcon::fromTheme("arrow-right"));
         m_tasks[task]->start();
     }
 }
@@ -46,7 +46,7 @@ void Storage::stopTask(QString& task)
     if (m_tasks.find(task) != m_tasks.end())
     {
         if (!m_tasks[task]->m_running) return;
-        m_tasks[task]->m_widgetItem->setIcon(0, KIcon("media-playback-pause"));
+        m_tasks[task]->m_widgetItem->setIcon(0, QIcon::fromTheme("media-playback-pause"));
         m_tasks[task]->stop();
     }
 }
@@ -287,4 +287,45 @@ void Storage::setDateTo(const QDate& newDateTo)
 {
     m_dateTo = newDateTo;
     computeAllDurations();
+}
+
+void Storage::hideUnusedTasks(QString& currentProject, bool hide, int intDuration, QString qStringDuration)
+{
+    for (auto i : m_tasks)
+        i->m_widgetItem->setHidden(false);
+
+    //If a specified project is selected, we must hide others
+    if (currentProject != i18n("Show all projects"))
+        for (auto i : m_tasks)
+            if (i->m_parent == nullptr && i->m_name != currentProject)
+                i->m_widgetItem->setHidden(true);
+
+    if (hide == true)
+    {
+        QDate startingDate = QDate::currentDate();
+        if (qStringDuration == i18n("Days"))
+            startingDate = startingDate.addDays(-intDuration);
+        else if (qStringDuration == i18n("Weeks"))
+            startingDate = startingDate.addDays(-intDuration * 7);
+        else if (qStringDuration == i18n("Months"))
+            startingDate = startingDate.addMonths(-intDuration);
+        else if (qStringDuration == i18n("Years"))
+            startingDate = startingDate.addYears(-intDuration);
+
+        for (auto i : m_tasks)
+        {
+            bool toHide = true;
+
+            for (auto j : i->m_children)
+                for (auto k : j->m_events)
+                    if (k->m_endTime.date() > startingDate)
+                        toHide = false;
+
+            for (auto l : i->m_events)
+                if (l->m_endTime.date() > startingDate)
+                    toHide = false;
+
+            if (toHide) i->m_widgetItem->setHidden(true);
+        }
+    }
 }

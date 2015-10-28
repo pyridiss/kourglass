@@ -4,9 +4,9 @@
 #include <QList>
 #include <KJob>
 
-#include <akonadi/changerecorder.h>
-#include <akonadi/entitytreemodel.h>
-#include <akonadi/entitymimetypefiltermodel.h>
+#include <AkonadiCore/ChangeRecorder>
+#include <AkonadiCore/EntityTreeModel>
+#include <AkonadiCore/EntityMimeTypeFilterModel>
 
 using namespace Akonadi;
 
@@ -41,6 +41,9 @@ MainView::MainView(QWidget *parent) :
     connect(ui->dateTo, SIGNAL(dateChanged(const QDate&)), this, SLOT(changeDateTo(const QDate&)));
     connect(ui->radioButtonAllEvents, SIGNAL(clicked()), this, SLOT(updateDatesFromTo()));
     connect(ui->radioButtonBetweenDates, SIGNAL(clicked()), this, SLOT(updateDatesFromTo()));
+    connect(ui->checkBoxHideUnused, SIGNAL(clicked()), this, SLOT(updateHideUnused()));
+    connect(ui->comboBoxHideUnused, SIGNAL(currentIndexChanged(QString)), this, SLOT(updateHideUnused()));
+    connect(ui->spinBoxHideUnused, SIGNAL(valueChanged(int)), this, SLOT(updateHideUnused()));
 }
 
 MainView::~MainView()
@@ -105,4 +108,9 @@ void MainView::updateDatesFromTo()
 {
     changeDateFrom(ui->dateFrom->date());
     changeDateTo(ui->dateTo->date());
+}
+
+void MainView::updateHideUnused()
+{
+    emit hideUnusedChanged();
 }

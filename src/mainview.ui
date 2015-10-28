@@ -82,6 +82,53 @@
          </layout>
         </widget>
        </item>
+       <item>
+        <widget class="QGroupBox" name="groupBox_2">
+         <property name="title">
+          <string>Old tasks:</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_5">
+          <item>
+           <widget class="QCheckBox" name="checkBoxHideUnused">
+            <property name="text">
+             <string>Hide tasks unused for:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="layout_oldtasks" stretch="1,3">
+            <item>
+             <widget class="QSpinBox" name="spinBoxHideUnused"/>
+            </item>
+            <item>
+             <widget class="QComboBox" name="comboBoxHideUnused">
+              <item>
+               <property name="text">
+                <string>Days</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Weeks</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Months</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Years</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
       </layout>
      </item>
      <item>
@@ -143,7 +190,7 @@
   <customwidget>
    <class>Akonadi::EntityTreeView</class>
    <extends>QTreeView</extends>
-   <header location="global">akonadi/entitytreeview.h</header>
+   <header location="global">AkonadiWidgets/EntityTreeView</header>
   </customwidget>
  </customwidgets>
  <resources/>

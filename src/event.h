@@ -3,7 +3,7 @@
 
 #include <QDateTime>
 
-#include <akonadi/collection.h>
+#include <AkonadiCore/Collection>
 
 using namespace Akonadi;
 

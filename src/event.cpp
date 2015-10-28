@@ -5,12 +5,12 @@
 
 #include <kcalcore/event.h>
 
-#include <akonadi/item.h>
-#include <akonadi/itemcreatejob.h>
-#include <akonadi/itemmodifyjob.h>
-#include <akonadi/itemdeletejob.h>
-#include <akonadi/itemfetchjob.h>
-#include <akonadi/itemfetchscope.h>
+#include <AkonadiCore/Item>
+#include <AkonadiCore/ItemCreateJob>
+#include <AkonadiCore/ItemModifyJob>
+#include <AkonadiCore/ItemDeleteJob>
+#include <AkonadiCore/ItemFetchJob>
+#include <AkonadiCore/ItemFetchScope>
 
 Event::Event(QString& name, QString& uid, qint64 akonadiId, QString& parentTask, const Collection& collection, QObject *parent) :
     QObject(parent)

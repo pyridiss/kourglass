@@ -18,7 +18,11 @@ set(kourglass_SRCS
     main.cpp
 )
 
-kde4_add_ui_files(kourglass_SRCS
+kconfig_add_kcfg_files(kourglass_SRCS
+    kourglassSettings.kcfgc
+)
+
+ki18n_wrap_ui(kourglass_SRCS
     taskpropertiesdialog.ui
     neweventdialog.ui
     newprojectdialog.ui
@@ -26,20 +30,23 @@ kde4_add_ui_files(kourglass_SRCS
     mainview.ui
 )
 
-kde4_add_executable(kourglass
+add_executable(kourglass
     ${kourglass_SRCS}
 )
 
 target_link_libraries(kourglass
-    ${KDE4_KDEUI_LIBS}
-    ${KDEPIMLIBS_AKONADI_LIBS}
-    kcalcore
-    akonadi-calendar
-    akonadi-kde
+    Qt5::Widgets
+    KF5::CoreAddons
+    KF5::I18n
+    KF5::XmlGui
+    KF5::ConfigWidgets
+    KF5::AkonadiCore
+    KF5::AkonadiWidgets
+    KF5::CalendarCore
 )
 
 set_target_properties(kourglass PROPERTIES COMPILE_FLAGS "-std=c++11 -g -Wall")
 
-install(TARGETS kourglass DESTINATION ${BIN_INSTALL_DIR})
-
-install(FILES kourglassui.rc DESTINATION ${DATA_INSTALL_DIR}/kourglass)
+install(TARGETS kourglass DESTINATION ${INSTALL_TARGETS_DEFAULT_ARGS})
+install(PROGRAMS kourglass.desktop DESTINATION ${XDG_APPS_INSTALL_DIR} )
+install(FILES kourglassui.rc DESTINATION ${KXMLGUI_INSTALL_DIR}/kourglass)

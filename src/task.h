@@ -9,7 +9,7 @@
 
 #include <KJob>
 
-#include <akonadi/collection.h>
+#include <AkonadiCore/Collection>
 
 #include "event.h"
 

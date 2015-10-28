@@ -2,7 +2,7 @@
 #include "ui_taskpropertiesdialog.h"
 
 #include <QTableWidgetItem>
-#include <KIcon>
+#include <QIcon>
 #include <QItemDelegate>
 #include <QDateTimeEdit>
 #include <QDateTime>
@@ -67,8 +67,8 @@ TaskPropertiesDialog::TaskPropertiesDialog(QWidget *parent) :
     ui(new Ui::TaskPropertiesDialog)
 {
     ui->setupUi(this);
-    ui->addEventButton->setIcon(KIcon("list-add"));
-    ui->deleteEventButton->setIcon(KIcon("list-remove"));
+    ui->addEventButton->setIcon(QIcon::fromTheme("list-add"));
+    ui->deleteEventButton->setIcon(QIcon::fromTheme("list-remove"));
     ui->deleteEventButton->setEnabled(false);
     connect(ui->addEventButton, SIGNAL(released()), this, SLOT(addEvent()));
     connect(ui->deleteEventButton, SIGNAL(released()), this, SLOT(deleteEvent()));

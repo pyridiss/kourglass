@@ -2,7 +2,7 @@
 #define MAINVIEW_H
 
 #include <QWidget>
-#include <akonadi/collection.h>
+#include <AkonadiCore/Collection>
 
 #include "task.h"
 
@@ -34,6 +34,7 @@ signals:
     void calendarChanged(const Collection& newCollection);
     void dateFromChanged(const QDate& newDate);
     void dateToChanged(const QDate& newDate);
+    void hideUnusedChanged();
 
 public slots:
     void changeProject(const QString& selectedProject);
@@ -42,8 +43,12 @@ public slots:
     void changeDateFrom(const QDate& newDate);
     void changeDateTo(const QDate& newDate);
     void updateDatesFromTo();
+    void updateHideUnused();
     void clearTreeWidget();
     void resizeColumn();
+
+    //MainWindow really needs to access ui...
+    friend class MainWindow;
 };
 
 #endif // MAINVIEW_H

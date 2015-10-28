@@ -2,10 +2,10 @@
 
 #include <kcalcore/todo.h>
 
-#include <akonadi/item.h>
-#include <akonadi/itemcreatejob.h>
-#include <akonadi/itemdeletejob.h>
-#include <akonadi/itemfetchjob.h>
+#include <AkonadiCore/Item>
+#include <AkonadiCore/ItemCreateJob>
+#include <AkonadiCore/ItemDeleteJob>
+#include <AkonadiCore/ItemFetchJob>
 
 #include "task.h"
 

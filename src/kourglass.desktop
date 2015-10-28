@@ -1,0 +1,7 @@
+[Desktop Entry]
+Comment=Track your time
+Exec=kouglass
+Icon=clock
+Type=Application
+Name=Kourglass
+GenericName=Time Tracker

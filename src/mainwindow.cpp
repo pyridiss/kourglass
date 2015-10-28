@@ -1,12 +1,16 @@
 #include "mainwindow.h"
 
+#include "ui_mainview.h"
+
 #include <KApplication>
 #include <KStatusNotifierItem>
 #include <KStatusBar>
-#include <KAction>
+#include <QAction>
 #include <KLocale>
 #include <KActionCollection>
 #include <KStandardAction>
+#include <QLabel>
+#include <QIcon>
 #include <QTimer>
 
 MainWindow::MainWindow(QWidget *parent) : KXmlGuiWindow(parent)
@@ -19,12 +23,20 @@ MainWindow::MainWindow(QWidget *parent) : KXmlGuiWindow(parent)
     systemTray->setTitle("Kourglass");
     systemTray->setToolTip("clock", "Kourglass", i18n("Track your time!"));
 
-    statusBar()->insertPermanentItem(i18n("Total calendar time:"), 1);
-    statusBar()->insertPermanentItem("00:00:00", 2);
-    statusBar()->insertPermanentItem("Today:", 3);
-    statusBar()->insertPermanentItem("00:00:00", 4);
-    statusBar()->insertPermanentItem("This week:", 5);
-    statusBar()->insertPermanentItem("00:00:00", 6);
+    QLabel* textStatusBar1 = new QLabel(i18n("Total calendar time:"), statusBar());
+    m_statusBarTotalTime = new QLabel(i18n("00:00:00"), statusBar());
+    QLabel* textStatusBar3 = new QLabel(i18n("Today:"), statusBar());
+    m_statusBarToday = new QLabel(i18n("00:00:00"), statusBar());
+    QLabel* textStatusBar5 = new QLabel(i18n("This week:"), statusBar());
+    m_statusBarWeek = new QLabel(i18n("00:00:00"), statusBar());
+
+    statusBar()->insertPermanentWidget(1, textStatusBar1);
+    statusBar()->insertPermanentWidget(2, m_statusBarTotalTime);
+    statusBar()->insertPermanentWidget(3, textStatusBar3);
+    statusBar()->insertPermanentWidget(4, m_statusBarToday);
+    statusBar()->insertPermanentWidget(5, textStatusBar5);
+    statusBar()->insertPermanentWidget(5, m_statusBarWeek);
+
 
     m_storage = new Storage(this);
     connect(m_storage, SIGNAL(projectLoaded(QString&, QTreeWidgetItem*)), this, SLOT(addProjectLoaded(QString&, QTreeWidgetItem*)));
@@ -35,6 +47,7 @@ MainWindow::MainWindow(QWidget *parent) : KXmlGuiWindow(parent)
     connect(m_mainView, SIGNAL(calendarChanged(const Collection&)), this, SLOT(setCurrentCalendar(const Collection&)));
     connect(m_mainView, SIGNAL(dateFromChanged(const QDate&)), m_storage, SLOT(setDateFrom(const QDate&)));
     connect(m_mainView, SIGNAL(dateToChanged(const QDate&)), m_storage, SLOT(setDateTo(const QDate&)));
+    connect(m_mainView, SIGNAL(hideUnusedChanged()), this, SLOT(hideUnusedChanged()));
     setCentralWidget(m_mainView);
 
     m_taskPropertiesDialog = new TaskPropertiesDialog(this);
@@ -63,39 +76,39 @@ MainWindow::~MainWindow()
 
 void MainWindow::setupActions()
 {
-    KAction* newProjectAction = new KAction(this);
+    QAction* newProjectAction = new QAction(this);
     newProjectAction->setText(i18n("&New project"));
-    newProjectAction->setIcon(KIcon("document-new"));
+    newProjectAction->setIcon(QIcon::fromTheme("document-new"));
     newProjectAction->setShortcut(Qt::Key_N);
     newProjectAction->setEnabled(false);
 
-    KAction* newTaskAction = new KAction(this);
+    QAction* newTaskAction = new QAction(this);
     newTaskAction->setText(i18n("&New sub-task"));
-    newTaskAction->setIcon(KIcon("go-next-view-page"));
+    newTaskAction->setIcon(QIcon::fromTheme("go-next-view-page"));
     newTaskAction->setShortcut(Qt::CTRL + Qt::Key_N);
     newTaskAction->setEnabled(false);
 
-    KAction* startTaskAction = new KAction(this);
+    QAction* startTaskAction = new QAction(this);
     startTaskAction->setText(i18n("&Start"));
-    startTaskAction->setIcon(KIcon("media-playback-start"));
+    startTaskAction->setIcon(QIcon::fromTheme("media-playback-start"));
     startTaskAction->setShortcut(Qt::Key_R);
     startTaskAction->setEnabled(false);
 
-    KAction* stopTaskAction = new KAction(this);
+    QAction* stopTaskAction = new QAction(this);
     stopTaskAction->setText(i18n("&Stop"));
-    stopTaskAction->setIcon(KIcon("media-playback-stop"));
+    stopTaskAction->setIcon(QIcon::fromTheme("media-playback-stop"));
     stopTaskAction->setShortcut(Qt::Key_S);
     stopTaskAction->setEnabled(false);
 
-    KAction* removeTaskAction = new KAction(this);
+    QAction* removeTaskAction = new QAction(this);
     removeTaskAction->setText(i18n("&Remove task"));
-    removeTaskAction->setIcon(KIcon("edit-delete"));
+    removeTaskAction->setIcon(QIcon::fromTheme("edit-delete"));
     removeTaskAction->setShortcut(Qt::Key_D);
     removeTaskAction->setEnabled(false);
 
-    KAction* taskPropertiesAction = new KAction(this);
+    QAction* taskPropertiesAction = new QAction(this);
     taskPropertiesAction->setText(i18n("&Task properties"));
-    taskPropertiesAction->setIcon(KIcon("configure"));
+    taskPropertiesAction->setIcon(QIcon::fromTheme("configure"));
     taskPropertiesAction->setShortcut(Qt::Key_P);
     taskPropertiesAction->setEnabled(false);
 
@@ -121,13 +134,14 @@ void MainWindow::setupActions()
     connect(this, SIGNAL(aRunningTaskIsSelected(bool)), stopTaskAction, SLOT(setEnabled(bool)));
     connect(this, SIGNAL(aTaskIsSelected(bool)), taskPropertiesAction, SLOT(setEnabled(bool)));
 
-    KStandardAction::quit(kapp, SLOT(quit()), actionCollection());
+    KStandardAction::quit(qApp, SLOT(quit()), actionCollection());
 
     setupGUI(Default, "kourglassui.rc");
 }
 
 void MainWindow::changeCurrentProject(const QString& cur)
 {
+    m_currentProject = cur;
     for (auto& i : m_storage->m_tasks)
     {
         if (i->m_parent == nullptr) //Only projects are concerned
@@ -263,7 +277,16 @@ void MainWindow::updateStatusBar()
         }
     }
 
-    statusBar()->changeItem(total.toString(), 2);
-    statusBar()->changeItem(today.toString(), 4);
-    statusBar()->changeItem(thisWeek.toString(), 6);
+    m_statusBarTotalTime->setText(total.toString());
+    m_statusBarToday->setText(today.toString());
+    m_statusBarWeek->setText(thisWeek.toString());
+}
+
+void MainWindow::hideUnusedChanged()
+{
+    bool hide = m_mainView->ui->checkBoxHideUnused->isChecked();
+    int intDuration = m_mainView->ui->spinBoxHideUnused->value();
+    QString qStringDuration = m_mainView->ui->comboBoxHideUnused->currentText();
+
+    m_storage->hideUnusedTasks(m_currentProject, hide, intDuration, qStringDuration);
 }

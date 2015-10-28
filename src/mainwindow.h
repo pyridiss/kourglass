@@ -3,6 +3,7 @@
 
 #include <KXmlGuiWindow>
 #include <QString>
+#include <QLabel>
 
 #include "storage.h"
 #include "mainview.h"
@@ -29,8 +30,14 @@ class MainWindow : public KXmlGuiWindow
         MainView* m_mainView;
         KStatusNotifierItem* systemTray;
 
+        QString m_currentProject;
         QString m_currentTask;
         Storage* m_storage;
+
+        QLabel* m_statusBarTotalTime;
+        QLabel* m_statusBarToday;
+        QLabel* m_statusBarWeek;
+
         void setupActions();
 
     signals:
@@ -53,6 +60,7 @@ class MainWindow : public KXmlGuiWindow
         void showTaskProperties();
         void setCurrentCalendar(const Collection& calendar);
         void updateStatusBar();
+        void hideUnusedChanged();
 };
 
 #endif // MAINWINDOW_H

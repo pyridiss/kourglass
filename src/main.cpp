@@ -1,25 +1,39 @@
-#include <KApplication>
+#include <QApplication>
+#include <QCommandLineParser>
+#include <QIcon>
 #include <KAboutData>
-#include <KCmdLineArgs>
-#include <KLocale>
+#include <KLocalizedString>
+#include <QtCore/QLoggingCategory>
 
 #include "mainwindow.h"
 
+Q_DECLARE_LOGGING_CATEGORY(KF5)
+Q_LOGGING_CATEGORY(KF5, "kf5")
+
 int main (int argc, char *argv[])
 {
-    KAboutData aboutData( "kourglass",
-                          0,
-                          ki18n("kourglass"),
-                          "0.0.1",
-                          ki18n("Tracks your time"),
-                          KAboutData::License_GPL,
-                          ki18n("Copyright © 2014 Quentin Henriet"),
-                          ki18n("Some text..."), // no text in the About box for the moment
-                          0, // No website for the moment
-                          "quentin.henriet@free.fr" );
-    KCmdLineArgs::init( argc, argv, &aboutData );
+    QApplication app(argc, argv);
 
-    KApplication app;
+    KLocalizedString::setApplicationDomain("kourglass");
+
+    KAboutData aboutData( QStringLiteral("kourglass"),
+                          i18n("kourglass"),
+                          QStringLiteral("0.1.0"),
+                          i18n("Tracks your time"),
+                          KAboutLicense::GPL,
+                          i18n("Copyright © 2014, 2015 Quentin Henriet <quentin.henriet@free.fr"));
+
+    aboutData.addAuthor(i18n("Quentin Henriet"),i18n("Author"), QStringLiteral("quentin.henriet@free.fr"));
+
+    app.setWindowIcon(QIcon::fromTheme("kourglass"));
+
+    QCommandLineParser parser;
+    parser.addHelpOption();
+    parser.addVersionOption();
+    aboutData.setupCommandLine(&parser);
+    parser.process(app);
+    aboutData.processCommandLine(&parser);
+    KAboutData::setApplicationData(aboutData);
 
     MainWindow* window = new MainWindow();
     window->show();
