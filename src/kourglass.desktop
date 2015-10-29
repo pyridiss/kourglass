@@ -1,6 +1,6 @@
 [Desktop Entry]
 Comment=Track your time
-Exec=kouglass
+Exec=kourglass
 Icon=clock
 Type=Application
 Name=Kourglass

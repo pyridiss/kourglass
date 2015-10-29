@@ -20,11 +20,10 @@ find_package(KF5 REQUIRED COMPONENTS
     XmlGui
     ConfigWidgets
     DocTools
+    Akonadi
+    CalendarCore
+    AkonadiCalendar
 )
-
-find_package(KF5Akonadi REQUIRED)
-find_package(KF5CalendarCore REQUIRED)
-find_package(KF5AkonadiCalendar REQUIRED)
 
 feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAGES)
 
