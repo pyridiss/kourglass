@@ -6,181 +6,294 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>917</width>
-    <height>552</height>
+    <width>1309</width>
+    <height>722</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainView</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_3">
+  <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,2,2">
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,4">
+    <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout">
-       <item>
-        <widget class="QLabel" name="labelCalendars">
-         <property name="text">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Calendars&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="Akonadi::EntityTreeView" name="listCalendars"/>
-       </item>
-       <item>
-        <widget class="QLabel" name="labelProperties">
-         <property name="text">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Properties&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QGroupBox" name="groupBox">
-         <property name="title">
-          <string>Show:</string>
-         </property>
-         <layout class="QVBoxLayout" name="verticalLayout_4">
-          <item>
-           <widget class="QRadioButton" name="radioButtonAllEvents">
-            <property name="text">
-             <string>All events</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QRadioButton" name="radioButtonBetweenDates">
-            <property name="text">
-             <string>Only between these dates:</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <layout class="QGridLayout" name="gridLayout">
-            <item row="1" column="0">
-             <widget class="QLabel" name="labelFrom">
-              <property name="text">
-               <string>from:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="1">
-             <widget class="QDateEdit" name="dateFrom"/>
-            </item>
-            <item row="2" column="0">
-             <widget class="QLabel" name="labelTo">
-              <property name="text">
-               <string>to:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="1">
-             <widget class="QDateEdit" name="dateTo"/>
-            </item>
-           </layout>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <widget class="QGroupBox" name="groupBox_2">
-         <property name="title">
-          <string>Old tasks:</string>
-         </property>
-         <layout class="QVBoxLayout" name="verticalLayout_5">
-          <item>
-           <widget class="QCheckBox" name="checkBoxHideUnused">
-            <property name="text">
-             <string>Hide tasks unused for:</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <layout class="QHBoxLayout" name="layout_oldtasks" stretch="1,3">
-            <item>
-             <widget class="QSpinBox" name="spinBoxHideUnused"/>
-            </item>
-            <item>
-             <widget class="QComboBox" name="comboBoxHideUnused">
-              <item>
-               <property name="text">
-                <string>Days</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Weeks</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Months</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Years</string>
-               </property>
-              </item>
-             </widget>
-            </item>
-           </layout>
-          </item>
-         </layout>
-        </widget>
-       </item>
-      </layout>
+      <widget class="QLabel" name="labelCalendars">
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Calendars&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
      </item>
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout_2">
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,4">
-         <item>
-          <widget class="QLabel" name="labelProjects">
+      <widget class="Akonadi::EntityTreeView" name="listCalendars"/>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="groupBox">
+       <property name="title">
+        <string>Show:</string>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_4">
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,4">
+          <item>
+           <widget class="QLabel" name="labelProjects">
+            <property name="text">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;Project:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QComboBox" name="selectProject"/>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="radioButtonAllEvents">
+          <property name="text">
+           <string>All e&amp;vents</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="radioButtonBetweenDates">
+          <property name="text">
+           <string>Only &amp;between these dates:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QGridLayout" name="gridLayout">
+          <item row="1" column="0">
+           <widget class="QLabel" name="labelFrom">
+            <property name="text">
+             <string>from:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QDateEdit" name="dateFrom"/>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="labelTo">
+            <property name="text">
+             <string>to:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QDateEdit" name="dateTo"/>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="groupBox_2">
+       <property name="title">
+        <string>Old tasks:</string>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_5">
+        <item>
+         <widget class="QCheckBox" name="checkBoxHideUnused">
+          <property name="text">
+           <string>Hide tasks unused for:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="layout_oldtasks" stretch="1,3">
+          <item>
+           <widget class="QSpinBox" name="spinBoxHideUnused"/>
+          </item>
+          <item>
+           <widget class="QComboBox" name="comboBoxHideUnused">
+            <item>
+             <property name="text">
+              <string>Days</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Weeks</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Months</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Years</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QTreeWidget" name="treeWidget">
+     <property name="alternatingRowColors">
+      <bool>true</bool>
+     </property>
+     <property name="sortingEnabled">
+      <bool>true</bool>
+     </property>
+     <property name="columnCount">
+      <number>2</number>
+     </property>
+     <attribute name="headerDefaultSectionSize">
+      <number>400</number>
+     </attribute>
+     <attribute name="headerShowSortIndicator" stdset="0">
+      <bool>true</bool>
+     </attribute>
+     <attribute name="headerStretchLastSection">
+      <bool>true</bool>
+     </attribute>
+     <column>
+      <property name="text">
+       <string>Task name</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Total duration</string>
+      </property>
+     </column>
+    </widget>
+   </item>
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout_2">
+     <item>
+      <widget class="QGroupBox" name="groupBox_5">
+       <property name="title">
+        <string>Task properties</string>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <item>
+         <layout class="QGridLayout" name="gridLayout_2" columnstretch="2,10,1">
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="taskNameEdit"/>
+          </item>
+          <item row="1" column="2">
+           <widget class="QLabel" name="progressValue">
+            <property name="text">
+             <string>0%</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Task name&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_2">
+            <property name="text">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Progress&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QSlider" name="progressSlider">
+            <property name="maximum">
+             <number>100</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="tickPosition">
+             <enum>QSlider::TicksBelow</enum>
+            </property>
+            <property name="tickInterval">
+             <number>10</number>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="groupBox_4">
+       <property name="title">
+        <string>Events list</string>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_6">
+        <item>
+         <widget class="QTableWidget" name="tableEvents">
+          <property name="alternatingRowColors">
+           <bool>true</bool>
+          </property>
+          <property name="verticalScrollMode">
+           <enum>QAbstractItemView::ScrollPerPixel</enum>
+          </property>
+          <property name="horizontalScrollMode">
+           <enum>QAbstractItemView::ScrollPerPixel</enum>
+          </property>
+          <attribute name="horizontalHeaderDefaultSectionSize">
+           <number>290</number>
+          </attribute>
+          <attribute name="horizontalHeaderStretchLastSection">
+           <bool>true</bool>
+          </attribute>
+          <attribute name="verticalHeaderVisible">
+           <bool>false</bool>
+          </attribute>
+          <column>
            <property name="text">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;Project:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            <string>UID</string>
            </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QComboBox" name="selectProject"/>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <widget class="QTreeWidget" name="treeWidget">
-         <property name="alternatingRowColors">
-          <bool>true</bool>
-         </property>
-         <property name="columnCount">
-          <number>4</number>
-         </property>
-         <attribute name="headerStretchLastSection">
-          <bool>true</bool>
-         </attribute>
-         <column>
-          <property name="text">
-           <string>Task name</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Total duration</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Today</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>This week</string>
-          </property>
-         </column>
-        </widget>
-       </item>
-      </layout>
+          </column>
+          <column>
+           <property name="text">
+            <string>Event name</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Start time</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>End time</string>
+           </property>
+          </column>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_5">
+          <item>
+           <widget class="QPushButton" name="addEventButton">
+            <property name="text">
+             <string>Add a new event</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="deleteEventButton">
+            <property name="text">
+             <string>Remove this event</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
      </item>
     </layout>
    </item>
@@ -190,7 +303,7 @@
   <customwidget>
    <class>Akonadi::EntityTreeView</class>
    <extends>QTreeView</extends>
-   <header location="global">AkonadiWidgets/EntityTreeView</header>
+   <header>entitytreeview.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

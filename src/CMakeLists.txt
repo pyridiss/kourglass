@@ -6,7 +6,6 @@ include_directories(
 )
 
 set(kourglass_SRCS
-    taskpropertiesdialog.cpp
     neweventdialog.cpp
     newprojectdialog.cpp
     newtaskdialog.cpp
@@ -23,7 +22,6 @@ kconfig_add_kcfg_files(kourglass_SRCS
 )
 
 ki18n_wrap_ui(kourglass_SRCS
-    taskpropertiesdialog.ui
     neweventdialog.ui
     newprojectdialog.ui
     newtaskdialog.ui

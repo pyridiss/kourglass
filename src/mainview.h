@@ -2,6 +2,8 @@
 #define MAINVIEW_H
 
 #include <QWidget>
+#include <QDialog>
+
 #include <AkonadiCore/Collection>
 
 #include "task.h"
@@ -24,9 +26,14 @@ public:
 
 public:
     void addProject(QString& name, QTreeWidgetItem* item);
+    void setTask(Task* task);
 
 private:
     Ui::MainView *ui;
+    Task* m_currentTask;
+
+private:
+    void updateTableEvents();
 
 signals:
     void projectChanged(const QString& selectedProject);
@@ -35,6 +42,8 @@ signals:
     void dateFromChanged(const QDate& newDate);
     void dateToChanged(const QDate& newDate);
     void hideUnusedChanged();
+    void allDurationsChanged();
+    void activateDeleteButton(bool);
 
 public slots:
     void changeProject(const QString& selectedProject);
@@ -45,10 +54,17 @@ public slots:
     void updateDatesFromTo();
     void updateHideUnused();
     void clearTreeWidget();
-    void resizeColumn();
+    void updateTask();
+    void addEvent();
+    void deleteEvent();
+    void anEventSelected();
+    void noEventSelected();
+    void resizeTableEventsColumns();
+    void updateProgressValue(int value);
 
     //MainWindow really needs to access ui...
     friend class MainWindow;
 };
 
 #endif // MAINVIEW_H
+

@@ -50,8 +50,7 @@ MainWindow::MainWindow(QWidget *parent) : KXmlGuiWindow(parent)
     connect(m_mainView, SIGNAL(hideUnusedChanged()), this, SLOT(hideUnusedChanged()));
     setCentralWidget(m_mainView);
 
-    m_taskPropertiesDialog = new TaskPropertiesDialog(this);
-    connect(m_taskPropertiesDialog, SIGNAL(allDurationsChanged()), m_storage, SLOT(computeAllDurations()));
+    connect(m_mainView, SIGNAL(allDurationsChanged()), m_storage, SLOT(computeAllDurations()));
 
     m_addProjectDialog = new NewProjectDialog(this);
     connect(m_addProjectDialog, SIGNAL(projectAccepted(QString&)), this, SLOT(addProject(QString&)));
@@ -106,18 +105,11 @@ void MainWindow::setupActions()
     removeTaskAction->setShortcut(Qt::Key_D);
     removeTaskAction->setEnabled(false);
 
-    QAction* taskPropertiesAction = new QAction(this);
-    taskPropertiesAction->setText(i18n("&Task properties"));
-    taskPropertiesAction->setIcon(QIcon::fromTheme("configure"));
-    taskPropertiesAction->setShortcut(Qt::Key_P);
-    taskPropertiesAction->setEnabled(false);
-
     actionCollection()->addAction("new-project", newProjectAction);
     actionCollection()->addAction("new-task", newTaskAction);
     actionCollection()->addAction("start-task", startTaskAction);
     actionCollection()->addAction("stop-task", stopTaskAction);
     actionCollection()->addAction("remove-task", removeTaskAction);
-    actionCollection()->addAction("task-properties", taskPropertiesAction);
 
     connect(newProjectAction, SIGNAL(triggered(bool)), m_addProjectDialog, SLOT(show()));
     connect(newTaskAction, SIGNAL(triggered(bool)), m_addTaskDialog, SLOT(show()));
@@ -125,14 +117,12 @@ void MainWindow::setupActions()
     connect(stopTaskAction, SIGNAL(triggered(bool)), this, SLOT(stopCurrentTask()));
     connect(stopTaskAction, SIGNAL(triggered(bool)), m_addEventDialog, SLOT(show()));
     connect(removeTaskAction, SIGNAL(triggered(bool)), this, SLOT(removeCurrentTask()));
-    connect(taskPropertiesAction, SIGNAL(triggered(bool)), this, SLOT(showTaskProperties()));
 
     connect(this, SIGNAL(currentTaskIsRealTask(bool)), removeTaskAction, SLOT(setEnabled(bool)));
     connect(this, SIGNAL(aCalendarIsSelected(bool)), newProjectAction, SLOT(setEnabled(bool)));
     connect(this, SIGNAL(aTaskIsSelected(bool)), newTaskAction, SLOT(setEnabled(bool)));
     connect(this, SIGNAL(aNonRunningTaskIsSelected(bool)), startTaskAction, SLOT(setEnabled(bool)));
     connect(this, SIGNAL(aRunningTaskIsSelected(bool)), stopTaskAction, SLOT(setEnabled(bool)));
-    connect(this, SIGNAL(aTaskIsSelected(bool)), taskPropertiesAction, SLOT(setEnabled(bool)));
 
     KStandardAction::quit(qApp, SLOT(quit()), actionCollection());
 
@@ -200,6 +190,7 @@ void MainWindow::setCurrentTask(QTreeWidgetItem* cur)
             emit currentTaskIsRealTask((i->m_parent != nullptr));
         }
     }
+    showTaskProperties();
 }
 
 void MainWindow::startCurrentTask()
@@ -230,10 +221,7 @@ void MainWindow::renameLastEvent(QString& name)
 void MainWindow::showTaskProperties()
 {
     if (m_storage->m_tasks.find(m_currentTask) != m_storage->m_tasks.end())
-    {
-        m_taskPropertiesDialog->setTask(m_storage->m_tasks[m_currentTask]);
-        m_taskPropertiesDialog->show();
-    }
+        m_mainView->setTask(m_storage->m_tasks[m_currentTask]);
 }
 
 void MainWindow::setCurrentCalendar(const Collection& calendar)

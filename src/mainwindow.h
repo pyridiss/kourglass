@@ -9,7 +9,6 @@
 #include "mainview.h"
 #include "newprojectdialog.h"
 #include "newtaskdialog.h"
-#include "taskpropertiesdialog.h"
 #include "neweventdialog.h"
 
 class KStatusNotifierItem;
@@ -26,7 +25,6 @@ class MainWindow : public KXmlGuiWindow
         NewProjectDialog* m_addProjectDialog;
         NewTaskDialog* m_addTaskDialog;
         NewEventDialog* m_addEventDialog;
-        TaskPropertiesDialog* m_taskPropertiesDialog;
         MainView* m_mainView;
         KStatusNotifierItem* systemTray;
 
